@@ -56,6 +56,9 @@ object RecyclerViewBinding {
     @BindingAdapter("decorationOrientation","space","beginStart","isReverseLayout",requireAll = false)
     @JvmStatic
     fun setDecorationSpace(recyclerView: RecyclerView,decorationOrientation:Int = 1,space:Int=0,beginStart:Boolean = true,reverseLayout:Boolean=false){
+        if (recyclerView.itemDecorationCount>0){
+            return
+        }
         val size = DisplayUtils.dp2px(recyclerView.context,space.toFloat())
         val decoration =  DividerSpace(size,decorationOrientation==1,beginStart,reverseLayout)
         recyclerView.addItemDecoration(decoration)
@@ -64,6 +67,9 @@ object RecyclerViewBinding {
     @BindingAdapter("divider")
     @JvmStatic
     fun setDivider(recyclerView: RecyclerView,@DrawableRes divider:Int = R.drawable.diver_line){
+        if (recyclerView.itemDecorationCount>0){
+            return
+        }
         val divider = DividerLineUtils.dividerLine(recyclerView.context,divider)
         recyclerView.addItemDecoration(divider)
     }
@@ -80,6 +86,9 @@ object RecyclerViewBinding {
     @BindingAdapter("spaceCount","gridSpace","includeEdge")
     @JvmStatic
     fun setGridDecoration(recyclerView: RecyclerView,spaceCount:Int,gridSpace:Int,includeEdge:Boolean){
+        if (recyclerView.itemDecorationCount>0){
+            return
+        }
         val decoration = GridSpacingItemDecoration(spaceCount,gridSpace,includeEdge)
         recyclerView.addItemDecoration(decoration)
     }
@@ -87,6 +96,9 @@ object RecyclerViewBinding {
     @BindingAdapter("decoration")
     @JvmStatic
     fun setDecoration(recyclerView: RecyclerView,decoration:RecyclerView.ItemDecoration){
+        if (recyclerView.itemDecorationCount>0){
+            return
+        }
         recyclerView.addItemDecoration(decoration)
     }
 
