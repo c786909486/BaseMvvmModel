@@ -85,7 +85,7 @@ class HttpManager {
                 .readTimeout(readTimeout, TimeUnit.MILLISECONDS)
                 .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
 //                .addInterceptor(ErrorInterceptor())
-                .addInterceptor(initLogInterceptor())
+//                .addInterceptor(initLogInterceptor())
                 .cookieJar(SimpleCookieJar())
                 .followRedirects(true)
                 .sslSocketFactory(
