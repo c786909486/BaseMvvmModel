@@ -22,6 +22,9 @@ interface CommonService {
     @GET
     suspend fun  getMethod(@Url url: String): Map<String,Any?>?
 
+    @GET
+    suspend fun getString(@Url url: String,@QueryMap options: Map<String, String?>?):ResponseBody
+
     @FormUrlEncoded
     @POST
     suspend fun postMethod(

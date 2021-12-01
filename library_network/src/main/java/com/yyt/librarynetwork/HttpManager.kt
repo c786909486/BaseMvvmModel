@@ -162,6 +162,12 @@ class HttpManager {
         return retrofit?.create(CommonService::class.java)?.getMethod(url, options ?: HashMap())
     }
 
+    suspend fun getString(url: String, options: Map<String, String>?): String {
+        val call = retrofit.create(CommonService::class.java).getString(
+            url, options ?: HashMap())
+        return  call.string()
+    }
+
     /**
      * 标准 post 请求
      */
