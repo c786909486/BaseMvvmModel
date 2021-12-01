@@ -2,6 +2,7 @@ package com.ckz.baselibrary.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import java.lang.Exception
 
 /**
  * @author kzcai
@@ -32,6 +33,17 @@ class Utils private constructor() {
                 return context
             }
             throw NullPointerException("should be initialized in application")
+        }
+
+        fun getAppVersion(context: Context): String? {
+            var version = "1.0.0" //默认1.0.0版本
+            val manager = context.packageManager
+            try {
+                val info = manager.getPackageInfo(context.packageName, 0)
+                version = info.versionName
+            } catch (e: Exception) {
+            }
+            return version
         }
     }
 

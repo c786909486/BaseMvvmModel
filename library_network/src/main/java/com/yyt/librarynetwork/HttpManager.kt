@@ -216,6 +216,9 @@ class HttpManager {
 
             val file = File(saveFile)
             file.createNewFile()
+            withContext(Dispatchers.Main){
+                listener.onDownloadStart()
+            }
             val call = retrofit.create(CommonService::class.java)
                 .downloadFile(fileUrl)
             val response: Response<ResponseBody>
@@ -228,7 +231,7 @@ class HttpManager {
                 return@withContext
             }
 
-            listener.onDownloadStart()
+
             if (response.isSuccessful && body != null) {
                 var inStream: InputStream? = null
                 var outStream: OutputStream? = null
