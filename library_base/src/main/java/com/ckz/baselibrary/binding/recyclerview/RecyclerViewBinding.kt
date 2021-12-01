@@ -5,7 +5,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.ckz.baselibrary.R
 import com.ckz.baselibrary.decoration.DividerSpace
@@ -23,11 +22,13 @@ object RecyclerViewBinding {
     /**
      * @Description 设置linearLayoutManager  0：HORIZONTAL  1：VERTICAL
      **/
-    @BindingAdapter("linearLayoutOrientation")
+    @BindingAdapter("linearLayoutOrientation","stackEnd",requireAll = false)
     @JvmStatic
-    fun setLinearLayoutManager(recyclerView: RecyclerView,orientation:Int = 1){
+    fun setLinearLayoutManager(recyclerView: RecyclerView,orientation:Int = 1,stackEnd:Boolean = false){
         val or = if (orientation==1) RecyclerView.VERTICAL else RecyclerView.HORIZONTAL
-        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context,or,false)
+        val manager = LinearLayoutManager(recyclerView.context,or,stackEnd)
+//        manager.stackFromEnd = stackEnd
+        recyclerView.layoutManager = manager
     }
 
     /**
@@ -56,9 +57,6 @@ object RecyclerViewBinding {
     @BindingAdapter("decorationOrientation","space","beginStart","isReverseLayout",requireAll = false)
     @JvmStatic
     fun setDecorationSpace(recyclerView: RecyclerView,decorationOrientation:Int = 1,space:Int=0,beginStart:Boolean = true,reverseLayout:Boolean=false){
-        if (recyclerView.itemDecorationCount>0){
-            return
-        }
         val size = DisplayUtils.dp2px(recyclerView.context,space.toFloat())
         val decoration =  DividerSpace(size,decorationOrientation==1,beginStart,reverseLayout)
         recyclerView.addItemDecoration(decoration)
@@ -67,9 +65,6 @@ object RecyclerViewBinding {
     @BindingAdapter("divider")
     @JvmStatic
     fun setDivider(recyclerView: RecyclerView,@DrawableRes divider:Int = R.drawable.diver_line){
-        if (recyclerView.itemDecorationCount>0){
-            return
-        }
         val divider = DividerLineUtils.dividerLine(recyclerView.context,divider)
         recyclerView.addItemDecoration(divider)
     }
@@ -86,9 +81,6 @@ object RecyclerViewBinding {
     @BindingAdapter("spaceCount","gridSpace","includeEdge")
     @JvmStatic
     fun setGridDecoration(recyclerView: RecyclerView,spaceCount:Int,gridSpace:Int,includeEdge:Boolean){
-        if (recyclerView.itemDecorationCount>0){
-            return
-        }
         val decoration = GridSpacingItemDecoration(spaceCount,gridSpace,includeEdge)
         recyclerView.addItemDecoration(decoration)
     }
@@ -96,16 +88,7 @@ object RecyclerViewBinding {
     @BindingAdapter("decoration")
     @JvmStatic
     fun setDecoration(recyclerView: RecyclerView,decoration:RecyclerView.ItemDecoration){
-        if (recyclerView.itemDecorationCount>0){
-            return
-        }
         recyclerView.addItemDecoration(decoration)
-    }
-
-    @BindingAdapter("snap")
-    @JvmStatic
-    fun setSnap(recyclerView: RecyclerView,snapHelper: SnapHelper){
-        snapHelper.attachToRecyclerView(recyclerView)
     }
 }
 
