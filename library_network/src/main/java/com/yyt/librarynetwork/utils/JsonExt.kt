@@ -1,6 +1,7 @@
 package com.yyt.librarynetwork.utils
 
 import com.google.gson.Gson
+import com.yyt.librarynetwork.interceptor.ApiErrorHelper
 
 /**
  * 使用Accessor来解析json的方法
@@ -19,5 +20,9 @@ inline fun <reified K> Map<String,Any?>?.toObject():K{
  */
 fun Any.toAccessorJson(): String {
     return Gson().toJson(this)
+}
+
+fun Exception.toNetError():String{
+    return ApiErrorHelper.netErrorString(this)
 }
 

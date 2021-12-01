@@ -43,4 +43,36 @@ object ApiErrorHelper {
             }
         }
     }
+
+    fun netErrorString( e: Throwable?):String {
+        when (e) {
+            is HttpException -> {
+                val code = (e as HttpException).response()?.code()
+                try {
+                    if (code!=null){
+//                        Toast.makeText(context, NetErrorString.getErrorStr(code), Toast.LENGTH_SHORT).show()
+                        return  NetErrorString.getErrorStr(code)
+                    }
+                }catch (e:IOException){
+                    e.printStackTrace()
+                }
+
+            }
+            is IOException -> {
+                return "连接失败"
+            }
+            is ApiException -> {
+                return  e.message?:""
+            }
+
+            is JSONException ->{
+                return  "JSON解析错误"
+            }
+            else -> {
+                return "未知错误"
+            }
+        }
+        return "网络连接失败，请检查网络"
+    }
+
 }

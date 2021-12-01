@@ -169,6 +169,15 @@ class HttpManager {
         return retrofit?.create(CommonService::class.java)?.postMethod(url, options)
     }
 
+
+    fun webSocket(url: String,listener:WebSocketListener):WebSocket{
+        val client = okHttpClient.newBuilder()
+            .pingInterval(20,TimeUnit.SECONDS)
+            .build()
+        val resueqt = Request.Builder().url(url).build()
+        return client.newWebSocket(resueqt,listener)
+    }
+
     /**
      * 标准 post 请求
      */
