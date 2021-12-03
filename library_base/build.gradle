@@ -83,6 +83,4 @@ dependencies {
     api rootProject.ext.dependencies["lifecycle-extensions"]
     api rootProject.ext.dependencies["eventBus"]
 
-    api 'androidx.multidex:multidex:2.0.1'
-
 }
