@@ -332,7 +332,7 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onMessageEvent(event: MessageEvent){
-
+        viewModel?.receiveEvent(event)
     }
 
 }

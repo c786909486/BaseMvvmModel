@@ -162,6 +162,11 @@ open class BaseViewModel @JvmOverloads constructor(
                 throw (Exception("activity or fragment is null"))
             }
         }
+
+    }
+
+    fun receiveEvent(event: MessageEvent){
+
     }
 
 
@@ -281,4 +286,5 @@ class UIChangeLiveData : SingleLiveEvent<Any?>() {
     override fun observe(owner: LifecycleOwner, observer: Observer<in Any?>) {
         super.observe(owner, observer)
     }
+
 }

@@ -297,7 +297,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onMessageEvent(event: MessageEvent){
-
+        viewModel?.receiveEvent(event)
     }
 
 }
