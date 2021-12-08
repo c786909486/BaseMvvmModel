@@ -69,10 +69,10 @@ object ApiErrorHelper {
                 return  "JSON解析错误"
             }
             else -> {
-                return "未知错误"
+                return e.toString()
             }
         }
-        return "网络连接失败，请检查网络"
+        return e.toString()
     }
 
 }
