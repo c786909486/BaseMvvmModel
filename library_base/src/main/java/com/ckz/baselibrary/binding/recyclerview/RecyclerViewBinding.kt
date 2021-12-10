@@ -2,9 +2,7 @@ package com.ckz.baselibrary.binding.recyclerview
 
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.ckz.baselibrary.R
 import com.ckz.baselibrary.decoration.DividerSpace
@@ -89,6 +87,11 @@ object RecyclerViewBinding {
     @JvmStatic
     fun setDecoration(recyclerView: RecyclerView,decoration:RecyclerView.ItemDecoration){
         recyclerView.addItemDecoration(decoration)
+    }
+    @BindingAdapter("snap")
+    @JvmStatic
+    fun setSnap(recyclerView: RecyclerView,snap: SnapHelper){
+        snap.attachToRecyclerView(recyclerView)
     }
 }
 
