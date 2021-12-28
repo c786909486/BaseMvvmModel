@@ -3,6 +3,7 @@ package com.yyt.librarynetwork
 import android.util.Log
 import com.yyt.librarynetwork.base.BaseRes
 import com.yyt.librarynetwork.base.CommonService
+import com.yyt.librarynetwork.converter.FastJsonConverterFactory
 import com.yyt.librarynetwork.converter.MyGsonConverterFactory
 import com.yyt.librarynetwork.cookie.SimpleCookieJar
 import com.yyt.librarynetwork.https.HttpsUtils
@@ -105,13 +106,13 @@ class HttpManager {
             retrofitBuilder = Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(baseUrl ?: "")
-                .addConverterFactory(MyGsonConverterFactory.create())
+                .addConverterFactory(FastJsonConverterFactory.create())
 
         } else {
             retrofitBuilder!!
                 .client(okHttpClient)
                 .baseUrl(baseUrl ?: "")
-                .addConverterFactory(MyGsonConverterFactory.create())
+                .addConverterFactory(FastJsonConverterFactory.create())
         }
 
 
