@@ -59,6 +59,7 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
         initParam()
         //私有的初始化Databinding和ViewModel方法
         initViewDataBinding(savedInstanceState)
+        initDialog()
         //私有的ViewModel与View的契约事件回调逻辑
         registorUIChangeLiveDataCallBack();
         //页面数据初始化方法

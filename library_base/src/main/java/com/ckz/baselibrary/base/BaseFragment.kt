@@ -56,6 +56,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     ): View? {
         initParam()
         binding = DataBindingUtil.inflate(inflater, initContentView(), container, false)
+        initDialog()
         initViewDataBinding()
         return binding!!.root
     }
