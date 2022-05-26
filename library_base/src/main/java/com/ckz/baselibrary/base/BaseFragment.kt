@@ -176,10 +176,12 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
         if (dialog==null){
             initDialog()
         }
-        if (!dialog!!.isShowing){
-            dialog!!.show()
-            tvMsg!!.text = msg
+        if (dialog?.isShowing==true){
+            dialog?.dismiss()
         }
+        dialog?.show()
+        dialog?.setContentView(dialogView!!)
+        tvMsg?.text = msg
     }
 
     override fun hideProgress() {

@@ -179,11 +179,12 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
             initDialog()
 
         }
-        if (!dialog!!.isShowing){
-            dialog!!.show()
-            dialog!!.setContentView(dialogView!!)
-            tvMsg!!.text = msg
+        if (dialog?.isShowing==true){
+            dialog?.dismiss()
         }
+        dialog?.show()
+        dialog?.setContentView(dialogView!!)
+        tvMsg?.text = msg
     }
 
     override fun hideProgress() {
