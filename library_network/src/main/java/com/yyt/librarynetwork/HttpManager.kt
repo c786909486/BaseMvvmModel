@@ -159,8 +159,13 @@ class HttpManager {
         return retrofit?.create(CommonService::class.java)?.getMethod(url)
     }
 
-    suspend fun get(url: String, options: Map<String, String>?): Map<String, Any?>? {
-        return retrofit?.create(CommonService::class.java)?.getMethod(url, options ?: HashMap())
+    suspend fun get(url: String,headers: Map<String, String>): Map<String, Any?>? {
+        return retrofit?.create(CommonService::class.java)?.getMethod(url,headers)
+    }
+
+
+    suspend fun get(url: String, options: Map<String, String>?,headers: Map<String, String>): Map<String, Any?>? {
+        return retrofit?.create(CommonService::class.java)?.getMethod(url, options ?: HashMap(),headers)
     }
 
     suspend fun getString(url: String, options: Map<String, String>?): String {
@@ -175,6 +180,10 @@ class HttpManager {
      */
     suspend fun postMethod(url: String, options: Map<String, String>): Map<String, Any?>? {
         return retrofit?.create(CommonService::class.java)?.postMethod(url, options)
+    }
+
+    suspend fun postMethod(url: String, options: Map<String, String>,headers:Map<String,String>): Map<String, Any?>? {
+        return retrofit?.create(CommonService::class.java)?.postMethod(url, options,headers)
     }
 
 

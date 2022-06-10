@@ -37,7 +37,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             "{\"userId\":\"109\",\"snCode\":\"TN1119C340016\",\"payTypeId\":\"130001\",\"receivableAmount\":\"1.00\",\"paidAmount\":\"1\",\"cCardId\":\"2c9e9f8c81181358018118efb6c80090\",\"clubBillId\":\"2c9e9f8c814906ef01814bb0e1b90091\",\"name\":\"涌泉蜜桔\",\"remark\":\"\",\"paymentRemark\":\"\",\"discount\":\"100\",\"isBearDiscount\":\"0\",\"isDisDiscount\":\"0\",\"detailDiscount\":\"100\",\"auth_code\":\"99999123123\"}"
         val data = JSON.parseObject(json)
         var map = data.innerMap
-        val response = HttpManager.instance.postMethod(url, map.toJsonMap())
+        val header = mapOf(
+            "clientType" to "app"
+        )
+        val response = HttpManager.instance.postMethod(url, map.toJsonMap(),header)
     }
 }
 

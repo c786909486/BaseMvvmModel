@@ -16,20 +16,39 @@ interface CommonService {
     @GET
     suspend fun  getMethod(
         @Url url: String,
-        @QueryMap options: Map<String, String?>?
+        @QueryMap options: Map<String, String?>?,
+        @HeaderMap headers:Map<String,String>
     ): Map<String,Any?>
 
     @GET
     suspend fun  getMethod(@Url url: String): Map<String,Any?>?
 
     @GET
+    suspend fun  getMethod(
+        @Url url: String,
+        @HeaderMap headers:Map<String,String>
+    ): Map<String,Any?>
+
+
+    @GET
     suspend fun getString(@Url url: String,@QueryMap options: Map<String, String?>?):ResponseBody
+
+    @GET
+    suspend fun getString(@Url url: String,@QueryMap options: Map<String, String?>?, @HeaderMap headers:Map<String,String>):ResponseBody
 
     @FormUrlEncoded
     @POST
     suspend fun postMethod(
         @Url url: String,
         @FieldMap options: Map<String, String>?
+    ): Map<String,Any?>?
+
+    @FormUrlEncoded
+    @POST
+    suspend fun postMethod(
+        @Url url: String,
+        @FieldMap options: Map<String, String>?,
+        @HeaderMap headers:Map<String,String>
     ): Map<String,Any?>?
 
     @POST
@@ -43,6 +62,13 @@ interface CommonService {
     suspend fun  uploadFile(
         @Url url: String,
         @Body body: RequestBody
+    ):Map<String,Any?>?
+
+    @POST
+    suspend fun  uploadFile(
+        @Url url: String,
+        @Body body: RequestBody,
+        @HeaderMap headers:Map<String,String>
     ):Map<String,Any?>?
 
 
