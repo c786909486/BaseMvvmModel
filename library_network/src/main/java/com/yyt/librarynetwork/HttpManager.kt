@@ -58,7 +58,7 @@ class HttpManager {
     /*读取超时时间*/
     var readTimeout: Long = 60 * 1000
     fun setReadTimeOut(readTimeOut: Long): HttpManager {
-        this.readTimeout = readTimeout
+        this.readTimeout = readTimeOut
         return this
     }
 
@@ -94,8 +94,7 @@ class HttpManager {
                 HttpsUtils.initTrustManager()
             )
 
-
-        okHttpClient = okHttpClientBuilder.build()
+//        okHttpClient = okHttpClientBuilder.build()
 
         initRetrofit()
 
@@ -143,7 +142,7 @@ class HttpManager {
             HttpManager()
         }
 
-        var okHttpClient: OkHttpClient = instance.okHttpClientBuilder.build()
+        val okHttpClient: OkHttpClient get() = instance.okHttpClientBuilder.build()
 
         val retrofit: Retrofit
             get() = instance.retrofitBuilder!!.build()
@@ -309,7 +308,7 @@ class HttpManager {
 
 
     fun setProxy(proxy: Proxy): HttpManager {
-        okHttpClient = instance.okHttpClientBuilder.proxy(proxy).build()
+        instance.okHttpClientBuilder.proxy(proxy)
         return this
     }
 
