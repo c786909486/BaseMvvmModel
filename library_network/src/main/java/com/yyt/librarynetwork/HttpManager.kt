@@ -80,8 +80,9 @@ class HttpManager {
     private fun initOkHttp() {
 
         okHttpClientBuilder = okHttpClientBuilder ?: OkHttpClient.Builder()
+
         okHttpClientBuilder.apply {
-            hostnameVerifier(HostnameVerifier { hostname, session -> true })
+                 hostnameVerifier(HostnameVerifier { hostname, session -> true })
                 .connectTimeout(connectTimeOut, TimeUnit.MILLISECONDS)
                 .readTimeout(readTimeout, TimeUnit.MILLISECONDS)
                 .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
@@ -94,6 +95,8 @@ class HttpManager {
                     HttpsUtils.initTrustManager()
                 )
         }
+
+        okHttpClient = okHttpClientBuilder.build()
 
         initRetrofit()
 
@@ -141,11 +144,10 @@ class HttpManager {
             HttpManager()
         }
 
-        val okHttpClient: OkHttpClient
-            get() = instance!!.okHttpClientBuilder!!.build()
+        var okHttpClient: OkHttpClient = instance.okHttpClientBuilder.build()
 
         val retrofit: Retrofit
-            get() = instance!!.retrofitBuilder!!.build()
+            get() = instance.retrofitBuilder!!.build()
 
         private val FILE_TYPE: MediaType? = "application/octet-stream".toMediaTypeOrNull()
 
