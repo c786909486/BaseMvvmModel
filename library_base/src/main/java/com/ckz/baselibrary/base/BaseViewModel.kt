@@ -99,36 +99,36 @@ open class BaseViewModel @JvmOverloads constructor(
             return uc
         }
 
-    fun showDialog(title: String = "") {
+    open fun showDialog(title: String = "") {
         uc!!.showDialogEvent!!.postValue(title)
     }
 
-    fun dismissDialog() {
+    open fun dismissDialog() {
         uc!!.dismissDialogEvent!!.call()
     }
 
 
-    fun showToast(msg: String = "") {
+    open fun showToast(msg: String = "") {
         uc!!.showToastEvent!!.postValue(msg)
     }
 
-    fun showContent() {
+    open fun showContent() {
         uc!!.showContentEvent!!.call()
     }
 
-    fun showLoading() {
+    open fun showLoading() {
         uc!!.showLoadingEvent!!.call()
     }
 
-    fun showEmpty() {
+    open fun showEmpty() {
         uc!!.showEmptyEvent!!.call()
     }
 
-    fun showFailure(message: String?) {
+    open fun showFailure(message: String?) {
         uc!!.showFailureEvent!!.postValue(message)
     }
 
-    fun startActivity(intent:Intent,options:Bundle?){
+    open fun startActivity(intent:Intent,options:Bundle?){
         when {
             activity!=null -> {
                 activity!!.startActivity(intent,options)
@@ -142,11 +142,11 @@ open class BaseViewModel @JvmOverloads constructor(
         }
     }
 
-    fun startActivity(intent: Intent){
+    open fun startActivity(intent: Intent){
         startActivity(intent,null)
     }
 
-    fun createLauncher(callback:(resultCode:Int,result:ActivityResult)->Unit):ActivityResultLauncher<Intent>{
+    open  fun createLauncher(callback:(resultCode:Int,result:ActivityResult)->Unit):ActivityResultLauncher<Intent>{
         return when{
             activity!=null->{
                 activity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
