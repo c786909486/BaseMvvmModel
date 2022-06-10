@@ -56,21 +56,21 @@ class HttpManager {
     }
 
     /*读取超时时间*/
-    var readTimeout: Long = 5 * 1000
+    var readTimeout: Long = 60
     fun setReadTimeOut(readTimeOut: Long): HttpManager {
         this.readTimeout = readTimeout
         return this
     }
 
     /*写入超时时间*/
-    var writeTimeOut: Long = 5 * 1000
+    var writeTimeOut: Long = 60
     fun setWriteTimeOut(writeTimeOut: Long): HttpManager {
         this.writeTimeOut = writeTimeOut
         return this
     }
 
     /*连接超时时间*/
-    var connectTimeOut: Long = 5 * 1000
+    var connectTimeOut: Long = 60
     fun setConnectTimeOut(connectTimeOut: Long): HttpManager {
         this.connectTimeOut = connectTimeOut
         return this
@@ -79,13 +79,13 @@ class HttpManager {
 
     private fun initOkHttp() {
 
-        okHttpClientBuilder = okHttpClientBuilder ?: OkHttpClient.Builder()
+        okHttpClientBuilder = OkHttpClient.Builder()
 
         okHttpClientBuilder.apply {
                  hostnameVerifier(HostnameVerifier { hostname, session -> true })
-                .connectTimeout(connectTimeOut, TimeUnit.MILLISECONDS)
-                .readTimeout(readTimeout, TimeUnit.MILLISECONDS)
-                .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
+                .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
+                .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .writeTimeout(writeTimeOut, TimeUnit.SECONDS)
 //                .addInterceptor(ErrorInterceptor())
 //                .addInterceptor(initLogInterceptor())
                 .cookieJar(SimpleCookieJar())
@@ -144,7 +144,7 @@ class HttpManager {
             HttpManager()
         }
 
-        var okHttpClient: OkHttpClient = instance.okHttpClientBuilder.build()
+        var okHttpClient: OkHttpClient?=null
 
         val retrofit: Retrofit
             get() = instance.retrofitBuilder!!.build()
@@ -179,8 +179,11 @@ class HttpManager {
     }
 
 
-    fun webSocket(url: String,listener:WebSocketListener):WebSocket{
-        val client = okHttpClient.newBuilder()
+    fun webSocket(url: String,listener:WebSocketListener):WebSocket?{
+        if (okHttpClient==null){
+            return null
+        }
+        val client = okHttpClient!!.newBuilder()
             .pingInterval(20,TimeUnit.SECONDS)
             .build()
         val resueqt = Request.Builder().url(url).build()
