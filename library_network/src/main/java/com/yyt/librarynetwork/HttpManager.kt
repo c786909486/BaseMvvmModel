@@ -56,21 +56,21 @@ class HttpManager {
     }
 
     /*读取超时时间*/
-    var readTimeout: Long = 60
+    var readTimeout: Long = 60 * 1000
     fun setReadTimeOut(readTimeOut: Long): HttpManager {
         this.readTimeout = readTimeout
         return this
     }
 
     /*写入超时时间*/
-    var writeTimeOut: Long = 60
+    var writeTimeOut: Long = 60 * 1000
     fun setWriteTimeOut(writeTimeOut: Long): HttpManager {
         this.writeTimeOut = writeTimeOut
         return this
     }
 
     /*连接超时时间*/
-    var connectTimeOut: Long = 60
+    var connectTimeOut: Long = 60 * 1000
     fun setConnectTimeOut(connectTimeOut: Long): HttpManager {
         this.connectTimeOut = connectTimeOut
         return this
@@ -79,22 +79,21 @@ class HttpManager {
 
     private fun initOkHttp() {
 
-        okHttpClientBuilder = OkHttpClient.Builder()
+        okHttpClientBuilder = okHttpClientBuilder ?: OkHttpClient.Builder()
 
-        okHttpClientBuilder.apply {
-                 hostnameVerifier(HostnameVerifier { hostname, session -> true })
-                .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
-                .readTimeout(readTimeout, TimeUnit.SECONDS)
-                .writeTimeout(writeTimeOut, TimeUnit.SECONDS)
+        okHttpClientBuilder.hostnameVerifier(HostnameVerifier { hostname, session -> true })
+            .connectTimeout(connectTimeOut, TimeUnit.MILLISECONDS)
+            .readTimeout(readTimeout, TimeUnit.MILLISECONDS)
+            .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
 //                .addInterceptor(ErrorInterceptor())
 //                .addInterceptor(initLogInterceptor())
-                .cookieJar(SimpleCookieJar())
-                .followRedirects(true)
-                .sslSocketFactory(
-                    HttpsUtils.initSSLSocketFactory(),
-                    HttpsUtils.initTrustManager()
-                )
-        }
+            .cookieJar(SimpleCookieJar())
+            .followRedirects(true)
+            .sslSocketFactory(
+                HttpsUtils.initSSLSocketFactory(),
+                HttpsUtils.initTrustManager()
+            )
+
 
         okHttpClient = okHttpClientBuilder.build()
 
@@ -144,7 +143,7 @@ class HttpManager {
             HttpManager()
         }
 
-        var okHttpClient: OkHttpClient?=null
+        var okHttpClient: OkHttpClient = instance.okHttpClientBuilder.build()
 
         val retrofit: Retrofit
             get() = instance.retrofitBuilder!!.build()
@@ -167,8 +166,9 @@ class HttpManager {
 
     suspend fun getString(url: String, options: Map<String, String>?): String {
         val call = retrofit.create(CommonService::class.java).getString(
-            url, options ?: HashMap())
-        return  call.string()
+            url, options ?: HashMap()
+        )
+        return call.string()
     }
 
     /**
@@ -179,15 +179,12 @@ class HttpManager {
     }
 
 
-    fun webSocket(url: String,listener:WebSocketListener):WebSocket?{
-        if (okHttpClient==null){
-            return null
-        }
-        val client = okHttpClient!!.newBuilder()
-            .pingInterval(20,TimeUnit.SECONDS)
+    fun webSocket(url: String, listener: WebSocketListener): WebSocket {
+        val client = okHttpClient.newBuilder()
+            .pingInterval(20, TimeUnit.SECONDS)
             .build()
         val resueqt = Request.Builder().url(url).build()
-        return client.newWebSocket(resueqt,listener)
+        return client.newWebSocket(resueqt, listener)
     }
 
     /**
@@ -222,16 +219,16 @@ class HttpManager {
 
             val file = File(saveFile)
             file.createNewFile()
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 listener.onDownloadStart()
             }
             val call = retrofit.create(CommonService::class.java)
                 .downloadFile(fileUrl)
             val response: Response<ResponseBody>
-            val body:ResponseBody?
+            val body: ResponseBody?
             try {
                 response = call.execute()
-                body  = response.body()
+                body = response.body()
             } catch (e: Exception) {
                 listener.onDownloadFail("无法连接网络")
                 return@withContext
@@ -312,10 +309,7 @@ class HttpManager {
 
 
     fun setProxy(proxy: Proxy): HttpManager {
-        instance.okHttpClientBuilder?.apply {
-            Log.d("adadasd", "dadaad")
-            proxy(proxy)
-        }
+        okHttpClient = instance.okHttpClientBuilder.proxy(proxy).build()
         return this
     }
 
