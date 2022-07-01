@@ -1,25 +1,19 @@
 package com.yyt.librarynetwork
 
 import android.util.Log
-import com.yyt.librarynetwork.base.BaseRes
 import com.yyt.librarynetwork.base.CommonService
 import com.yyt.librarynetwork.converter.FastJsonConverterFactory
-import com.yyt.librarynetwork.converter.MyGsonConverterFactory
 import com.yyt.librarynetwork.cookie.SimpleCookieJar
 import com.yyt.librarynetwork.https.HttpsUtils
-import com.yyt.librarynetwork.interceptor.ErrorInterceptor
 import com.yyt.librarynetwork.listener.OnDownloadListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.*
-import okhttp3.Headers.Companion.headersOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
@@ -98,6 +92,12 @@ class HttpManager {
 
         initRetrofit()
 
+    }
+
+    fun addInterceptor(interceptor: Interceptor): HttpManager {
+            okHttpClientBuilder
+                .addInterceptor(interceptor)
+        return this
     }
 
 
