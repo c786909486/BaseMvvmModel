@@ -51,7 +51,6 @@ interface CommonService {
         @HeaderMap headers:Map<String,String>
     ): Map<String,Any?>?
 
-    @FormUrlEncoded
     @POST
     suspend fun postMethod(
         @Url url: String,
