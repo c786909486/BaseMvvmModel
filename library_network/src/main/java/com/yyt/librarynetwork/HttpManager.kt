@@ -179,11 +179,15 @@ class HttpManager {
      * 标准 post 请求
      */
     suspend fun postMethod(url: String, options: Map<String, String>): Map<String, Any?>? {
-        return retrofit?.create(CommonService::class.java)?.postMethod(url, options)
+        return retrofit.create(CommonService::class.java).postMethod(url, options)
     }
 
     suspend fun postMethod(url: String, options: Map<String, String>,headers:Map<String,String>): Map<String, Any?>? {
-        return retrofit?.create(CommonService::class.java)?.postMethod(url, options,headers)
+        return retrofit.create(CommonService::class.java).postMethod(url, options,headers)
+    }
+
+    suspend fun postMethod(url: String, info: String,headers:Map<String,String>): Map<String, Any?>? {
+        return retrofit.create(CommonService::class.java).postMethod(url, info,headers)
     }
 
 
