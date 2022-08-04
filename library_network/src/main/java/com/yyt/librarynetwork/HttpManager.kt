@@ -190,6 +190,10 @@ class HttpManager {
         return retrofit.create(CommonService::class.java).postMethod(url, info,headers)
     }
 
+    suspend fun postBody(url: String, info: Map<String,Any?>,headers:Map<String,String>): Map<String, Any?>? {
+        return retrofit.create(CommonService::class.java).postBody(url, info,headers)
+    }
+
 
     fun webSocket(url: String, listener: WebSocketListener): WebSocket {
         val client = okHttpClient.newBuilder()

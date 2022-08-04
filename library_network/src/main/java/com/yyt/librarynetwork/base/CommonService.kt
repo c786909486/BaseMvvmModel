@@ -58,6 +58,12 @@ interface CommonService {
         @HeaderMap headers:Map<String,String>
     ): Map<String,Any?>?
 
+    @POST
+    suspend fun postBody(
+        @Url url: String,
+        @Body info: Map<String,Any?>,
+        @HeaderMap headers:Map<String,String>
+    ): Map<String,Any?>?
 
 
     @POST
