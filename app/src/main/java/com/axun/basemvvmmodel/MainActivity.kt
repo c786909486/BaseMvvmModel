@@ -27,7 +27,7 @@ class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
             setWriteTimeOut(5*1000L)
             setConnectTimeOut(5*1000L)
             if (BuildConfig.DEBUG){
-                setProxy("192.168.3.41",8888)
+                setProxy("192.168.3.22",8888)
 //                setProxy("192.168.31.186",8888)
 //                setProxy("192.168.124.6",8888)
             }

@@ -54,7 +54,7 @@ interface CommonService {
     @POST
     suspend fun postMethod(
         @Url url: String,
-        @Body info: String,
+        @Body info: RequestBody,
         @HeaderMap headers:Map<String,String>
     ): Map<String,Any?>?
 

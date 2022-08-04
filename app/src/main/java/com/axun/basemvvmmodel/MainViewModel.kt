@@ -22,7 +22,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch {
             showDialog()
             try {
-                getNet()
+                getJsonNet()
             } catch (e: Exception) {
                 e.printStackTrace()
                 showToast(e.toNetError())
@@ -38,9 +38,23 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         val data = JSON.parseObject(json)
         var map = data.innerMap
         val header = mapOf(
-            "clientType" to "app"
+            "clientType" to "app",
+            "content-type" to "application"
         )
         val response = HttpManager.instance.postMethod(url, map.toJsonMap(),header)
+    }
+
+    suspend fun getJsonNet(){
+        val url = "http://ageds.rkph.com.cn:8081/interfaces/consumptionApp.do?m=payByAlipay"
+        var map = mapOf(
+            "aapp" to "111",
+            "sss" to "1ww"
+        )
+        val header = mapOf(
+            "clientType" to "app",
+            "content-type" to "application/json"
+        )
+        val response = HttpManager.instance.postMethod(url,map.toAccessorJson(),header)
     }
 }
 

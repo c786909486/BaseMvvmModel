@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -187,12 +188,13 @@ class HttpManager {
     }
 
     suspend fun postMethod(url: String, info: String,headers:Map<String,String>): Map<String, Any?>? {
-        return retrofit.create(CommonService::class.java).postMethod(url, info,headers)
+        val requestBody = info.toRequestBody("application/json; Accept: application/json".toMediaTypeOrNull())
+        return retrofit.create(CommonService::class.java).postMethod(url, requestBody,headers)
     }
 
-    suspend fun postBody(url: String, info: Map<String,Any?>,headers:Map<String,String>): Map<String, Any?>? {
-        return retrofit.create(CommonService::class.java).postBody(url, info,headers)
-    }
+//    suspend fun postBody(url: String, info: Map<String,Any?>,headers:Map<String,String>): Map<String, Any?>? {
+//        return retrofit.create(CommonService::class.java).postBody(url, info,headers)
+//    }
 
 
     fun webSocket(url: String, listener: WebSocketListener): WebSocket {
