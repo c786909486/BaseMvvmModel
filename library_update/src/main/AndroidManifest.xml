@@ -4,6 +4,6 @@
 
     <application>
         <activity android:name=".update.UpdateAppActivity"
-            android:theme="@style/appDialogStyle2"/>
+            android:theme="@style/appDialogStyle2.updateDialog"/>
     </application>
 </manifest>

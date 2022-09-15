@@ -45,6 +45,8 @@ dependencies {
     implementation project(path: ':library_base')
     implementation project(path: ':library_network')
     implementation project(path: ':library_update')
+    implementation 'me.jessyan:autosize:1.1.2'
+
 //    testImplementation 'junit:junit:4.+'
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
