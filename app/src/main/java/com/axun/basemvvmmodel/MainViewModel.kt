@@ -4,6 +4,7 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
+import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseViewModel
 import com.yyt.librarynetwork.HttpManager
 import com.yyt.librarynetwork.utils.toAccessorJson
@@ -29,6 +30,11 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             }
             dismissDialog()
         }
+    }
+
+    fun appUpdate(view:View){
+        val model = AppUpdateData("1.0.2","http://42.193.160.4:8084/adm/app/lishiApp.apk")
+        UpdateUtils.instance.checkUpdate(model,true)
     }
 
     suspend fun getNet() {

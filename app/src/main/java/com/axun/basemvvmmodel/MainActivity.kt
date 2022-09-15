@@ -2,6 +2,7 @@ package com.axun.basemvvmmodel
 
 import android.os.Bundle
 import com.axun.basemvvmmodel.databinding.ActivityMainBinding
+import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseCompatActivity
 import com.yyt.librarynetwork.HttpManager
 
@@ -22,6 +23,8 @@ class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        UpdateUtils.instance
+            .init(context)
         HttpManager.instance.apply {
             setReadTimeOut(5*1000L)
             setWriteTimeOut(5*1000L)
