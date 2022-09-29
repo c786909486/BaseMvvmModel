@@ -206,11 +206,16 @@ open class BaseViewModel @JvmOverloads constructor(
     }
 
     override fun registerRxBus() {
-        EventBus.getDefault().register(this)
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this)
+        }
     }
 
     override fun removeRxBus() {
-        EventBus.getDefault().unregister(this)
+        if(EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this)
+        }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

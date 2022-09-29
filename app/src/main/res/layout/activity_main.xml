@@ -35,5 +35,11 @@
             android:layout_height="wrap_content"
             android:text="Hello World!" />
 
+        <fragment
+            android:id="@+id/fl_content"
+            android:name="com.axun.basemvvmmodel.TestFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </LinearLayout>
 </layout>
