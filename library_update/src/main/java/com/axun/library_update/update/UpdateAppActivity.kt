@@ -31,8 +31,15 @@ class UpdateAppActivity:BaseCompatActivity<ActivityUpdateAppBinding,UpdateAppVie
 
     private fun setWindow(){
         val params = window.attributes
-        params.width = ScreenUtils.getScreenWidth(context)*2/3
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT
+        val sw = ScreenUtils.getScreenWidth(context)
+        val sh = ScreenUtils.getScreenHeight(context)
+        if (sh>sw){
+            params.width = ScreenUtils.getScreenWidth(context)*2/3
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT
+        }else{
+            params.width = sw/3-40
+            params.height = sh
+        }
         window.attributes = params
     }
 

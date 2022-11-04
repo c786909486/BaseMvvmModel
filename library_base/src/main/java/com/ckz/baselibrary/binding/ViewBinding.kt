@@ -24,6 +24,12 @@ object ViewBinding {
         view.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
+    @BindingAdapter("isVisibility")
+    @JvmStatic
+    fun isVisibility(view: View,isShow:Boolean){
+        view.visibility = if (isShow) View.VISIBLE else View.INVISIBLE
+    }
+
     @BindingAdapter("isSelected")
     @JvmStatic
     fun isSelected(view:View,isSelected:Boolean){

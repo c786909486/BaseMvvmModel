@@ -31,9 +31,11 @@
             <LinearLayout
                 android:id="@+id/ll_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignTop="@id/iv_bg"
                 android:layout_alignBottom="@id/iv_bg"
+                android:layout_alignStart="@id/iv_bg"
+                android:layout_alignEnd="@id/iv_bg"
                 android:layout_marginTop="140dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -94,6 +96,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="20dp"
+
                         android:max="100"
                         android:progress="@{updateViewModel.percent}"
                         app:isShow="@{updateViewModel.inDownload}" />
@@ -104,17 +107,17 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@color/white"
-            app:isShow="@{!updateViewModel.inDownload}"/>
+            app:isVisibility="@{!updateViewModel.inDownload}" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_round_close"
             android:layout_gravity="center"
-            app:isShow="@{!updateViewModel.inDownload}"
+            app:isVisibility="@{!updateViewModel.inDownload}"
             android:onClick="@{updateViewModel::close}"/>
     </LinearLayout>
 </layout>
