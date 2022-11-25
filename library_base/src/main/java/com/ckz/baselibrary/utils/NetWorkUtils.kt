@@ -64,7 +64,10 @@ object NetWorkUtils {
             }
 
         }catch (e:Exception){
-
+            e.printStackTrace()
+            for (listener in listeners){
+                listener.onError(e)
+            }
         }
 
     }
@@ -86,7 +89,9 @@ object NetWorkUtils {
                 }
             }
         }catch (e:Exception){
-
+            for (listener in listeners){
+                listener.onError(e)
+            }
         }
     }
 
@@ -172,5 +177,6 @@ object NetWorkUtils {
     interface OnNetWorDelayListener{
         fun onGetLostInfo(lost:String)
         fun onGetNetDelay(delay:String)
+        fun onError(error:Exception)
     }
 }
