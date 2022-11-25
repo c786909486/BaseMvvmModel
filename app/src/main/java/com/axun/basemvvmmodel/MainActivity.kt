@@ -5,6 +5,7 @@ import com.axun.basemvvmmodel.databinding.ActivityMainBinding
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseCompatActivity
 import com.yyt.librarynetwork.HttpManager
+import java.util.jar.Manifest
 
 class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
 
@@ -25,6 +26,7 @@ class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
         super.onCreate(savedInstanceState)
         UpdateUtils.instance
             .init(context)
+        requestPermission()
         HttpManager.instance.apply {
             setReadTimeOut(5*1000L)
             setWriteTimeOut(5*1000L)
@@ -37,5 +39,12 @@ class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
             setBaseUrl("http://ageds.rkph.com.cn:8081/")
             build()
         }
+    }
+
+
+    private fun requestPermission(){
+        requestPermissions(
+            arrayOf(android.Manifest.permission.READ_PHONE_STATE),200
+        )
     }
 }

@@ -29,6 +29,24 @@
             android:onClick="@{mainViewModel::appUpdate}"/>
 
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="网络延迟"
+            android:onClick="@{mainViewModel::netTest}"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关闭延迟"
+            android:onClick="@{mainViewModel::stopDelay}"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取wifi信息"
+            android:onClick="@{mainViewModel::wifiInfo}"/>
+
 
         <TextView
             android:layout_width="match_parent"

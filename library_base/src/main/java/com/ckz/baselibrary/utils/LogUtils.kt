@@ -5,6 +5,9 @@ import com.ckz.baselibrary.BuildConfig
 
 object LogUtils {
     private val isDebug = BuildConfig.DEBUG
+
+
+
     @JvmStatic
     fun d(tag: String?, d: String) {
         if (isDebug) {

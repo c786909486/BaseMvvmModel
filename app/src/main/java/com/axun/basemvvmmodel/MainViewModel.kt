@@ -1,16 +1,19 @@
 package com.axun.basemvvmmodel
 
 import android.app.Application
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseViewModel
+import com.ckz.baselibrary.utils.NetWorkUtils
 import com.yyt.librarynetwork.HttpManager
 import com.yyt.librarynetwork.utils.toAccessorJson
 import com.yyt.librarynetwork.utils.toNetError
-import com.yyt.librarynetwork.utils.toObject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  *@packageName com.axun.basemvvmmodel
@@ -61,6 +64,52 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             "content-type" to "application/json"
         )
         val response = HttpManager.instance.postMethod(url,map.toAccessorJson(),header)
+    }
+
+    fun netTest(view:View){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+
+                NetWorkUtils.getNetDelay("www.axun.com.cn")
+            }
+        }
+
+    }
+
+    fun stopDelay(view:View){
+        NetWorkUtils.stop()
+    }
+
+
+    fun wifiInfo(view:View){
+        val info =  NetWorkUtils
+            .getWifiInfo(context)
+        if (info!=null){
+            val rri = info.bssid
+            showToast(rri)
+        }
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        NetWorkUtils.addListener(listener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        NetWorkUtils.removeListener(listener)
+    }
+
+    val listener = object :NetWorkUtils.OnNetWorDelayListener{
+        override fun onGetLostInfo(lost: String) {
+
+        }
+
+        override fun onGetNetDelay(delay: String) {
+            Log.d("1231313===>",delay)
+        }
+
     }
 }
 
