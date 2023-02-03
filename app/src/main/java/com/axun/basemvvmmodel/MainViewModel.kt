@@ -110,6 +110,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
             Log.d("1231313===>",delay)
         }
 
+        override fun onError(error: Exception) {
+
+        }
+
     }
 }
 

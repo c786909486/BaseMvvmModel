@@ -1,13 +1,18 @@
 package com.ckz.baselibrary.utils
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.Context.WIFI_SERVICE
+import android.content.Intent
+import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
+import android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION
+import android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION
 import android.os.Build
 import android.telephony.TelephonyManager
 import java.io.BufferedReader
@@ -89,6 +94,7 @@ object NetWorkUtils {
                 }
             }
         }catch (e:Exception){
+            e.printStackTrace()
             for (listener in listeners){
                 listener.onError(e)
             }
@@ -159,11 +165,11 @@ object NetWorkUtils {
 
     private val listeners = mutableListOf<OnNetWorDelayListener>()
 
-    fun addListener(listener:OnNetWorDelayListener){
+    fun addListener(listener: OnNetWorDelayListener){
         listeners.add(listener)
     }
 
-    fun removeListener(listener:OnNetWorDelayListener){
+    fun removeListener(listener: OnNetWorDelayListener){
         listeners.remove(listener)
     }
 
@@ -178,5 +184,44 @@ object NetWorkUtils {
         fun onGetLostInfo(lost:String)
         fun onGetNetDelay(delay:String)
         fun onError(error:Exception)
+    }
+
+    var receiver = NetChangeReceiver()
+
+    fun addNetChangeListener(listener:(()->Unit)){
+        receiver.onChanged = listener
+    }
+
+    fun registerNetChange(context: Context){
+        val intent = IntentFilter()
+        intent.addAction(WIFI_STATE_CHANGED_ACTION)
+        intent.addAction(NETWORK_STATE_CHANGED_ACTION)
+        intent.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        context.registerReceiver(receiver,intent)
+    }
+
+    fun unregisterNetChange(context: Context){
+        receiver.onChanged = null
+        context.unregisterReceiver(receiver)
+    }
+
+    class NetChangeReceiver:BroadcastReceiver(){
+
+
+        var onChanged:(()->Unit)?=null
+
+
+
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            when(p1?.action){
+                WIFI_STATE_CHANGED_ACTION,
+                NETWORK_STATE_CHANGED_ACTION,
+                ConnectivityManager.CONNECTIVITY_ACTION->{
+                    onChanged?.invoke()
+                }
+            }
+
+        }
+
     }
 }
