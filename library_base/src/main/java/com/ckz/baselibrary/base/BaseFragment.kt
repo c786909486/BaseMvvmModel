@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -202,6 +203,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
      */
     open fun setLoadSir(view: View?) {
         if (mLoadService == null) {
+            Log.d("BaseFragment", "setLoadSir: ")
             mLoadService = LoadSir.getDefault()
                 .register(view,
                     Callback.OnReloadListener { v: View? -> onRetryBtnClick() }
