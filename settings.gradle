@@ -11,3 +11,4 @@ rootProject.name = "BaseMvvmModel"
 include ':app'
 include ':library_base',':library_network'
 include ':library_update'
+include ':library_base_compose'

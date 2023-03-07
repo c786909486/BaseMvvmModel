@@ -295,6 +295,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
     override fun onDestroy() {
         super.onDestroy()
+        mLoadService = null
         viewModel?.removeRxBus()
     }
 

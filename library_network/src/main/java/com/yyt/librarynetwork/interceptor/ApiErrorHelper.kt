@@ -59,7 +59,7 @@ object ApiErrorHelper {
 
             }
             is IOException -> {
-                return "连接失败"
+                return "连接失败:IOException"
             }
             is ApiException -> {
                 return  e.message?:""
