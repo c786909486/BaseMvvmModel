@@ -328,8 +328,19 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
 
 
     override fun onDestroy() {
-        super.onDestroy()
+       if (dialog?.isShowing==true){
+           dialog?.dismiss()
+       }
         viewModel?.removeRxBus()
+        binding = null
+        dialog = null
+        viewModel = null
+        mLoadService = null
+        dialogView = null
+        tvMsg = null
+        super.onDestroy()
+
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

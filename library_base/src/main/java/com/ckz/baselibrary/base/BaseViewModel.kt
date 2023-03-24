@@ -229,6 +229,11 @@ open class BaseViewModel @JvmOverloads constructor(
         for (model in mInjectModels) {
             model?.onCleared()
         }
+        mInjectModels.clear()
+        uc = null
+        activity = null
+        fragment = null
+
     }
 
     override fun getLifecycle(): Lifecycle {

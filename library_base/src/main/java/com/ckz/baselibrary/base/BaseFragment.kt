@@ -296,9 +296,17 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     protected abstract fun onRetryBtnClick()
 
     override fun onDestroy() {
-        super.onDestroy()
-        mLoadService = null
+        if (dialog?.isShowing==true){
+            dialog?.dismiss()
+        }
+        dialog = null
         viewModel?.removeRxBus()
+        mLoadService = null
+        binding = null
+        viewModel=null
+        tvMsg=null
+        super.onDestroy()
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
