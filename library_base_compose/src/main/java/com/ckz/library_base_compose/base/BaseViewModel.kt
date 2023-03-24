@@ -16,7 +16,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.mycomposedemo.base.*
 import kotlinx.coroutines.channels.Channel
 
 /**

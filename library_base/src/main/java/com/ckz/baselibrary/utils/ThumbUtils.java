@@ -5,6 +5,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 
+import java.io.IOException;
 import java.util.Hashtable;
 
 /**
@@ -37,6 +38,8 @@ public class ThumbUtils {
             } catch (RuntimeException ex) {
                 // Ignore failures while cleaning up.
                 ex.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

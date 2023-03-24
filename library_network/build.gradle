@@ -12,7 +12,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.gitee.code1993'
                 artifactId = 'library_network'
-                version = '1.0.3'
+                version = '1.0.4'
             }
         }
     }
