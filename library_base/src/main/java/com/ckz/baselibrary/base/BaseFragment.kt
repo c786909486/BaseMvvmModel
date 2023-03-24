@@ -36,17 +36,17 @@ import java.lang.reflect.Type
  */
 abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment(), IBaseView,
     LifecycleObserver {
-    protected var binding:V?=null
+    protected var binding: V? = null
 
     protected var viewModel: VM? = null
 
-    private var viewModelId:Int = 0
+    private var viewModelId: Int = 0
 
-    private var dialog: AlertDialog?=null
+    private var dialog: AlertDialog? = null
 
-    private var dialogView: View?=null
+    private var dialogView: View? = null
 
-    private var tvMsg: TextView?=null
+    private var tvMsg: TextView? = null
 
     private var mLoadService: LoadService<*>? = null
 
@@ -65,20 +65,20 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //私有的ViewModel与View的契约事件回调逻辑
-        registorUIChangeLiveDataCallBack();
+        registorUIChangeLiveDataCallBack()
         //页面数据初始化方法
-        initInitializationData();
+        initInitializationData()
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
-        initViewObservable();
+        initViewObservable()
         //注册RxBus
-        viewModel?.registerRxBus();
+        viewModel?.registerRxBus()
     }
 
-    private fun initDialog(){
+    private fun initDialog() {
         dialog = AlertDialog.Builder(context, R.style.LoadDialog).create()
         dialog?.setCancelable(true)
         dialog?.setCanceledOnTouchOutside(false)
-        dialog?.setOnDismissListener(DialogInterface.OnDismissListener { onLoadingDismiss() })
+        dialog?.setOnDismissListener { onLoadingDismiss() }
         dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null)
         tvMsg = dialogView?.findViewById(R.id.tv_msg)
         dialog?.setOnDismissListener {
@@ -89,7 +89,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     /**
      * 注入绑定
      */
-    private  fun initViewDataBinding() {
+    private fun initViewDataBinding() {
         //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
 
         viewModelId = initVariableId()
@@ -103,7 +103,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
                 //如果没有指定泛型参数，则默认使用BaseViewModel
                 BaseViewModel::class.java
             }) as Class<ViewModel>
-            viewModel = createViewModel (modelClass) as VM
+            viewModel = createViewModel(modelClass) as VM
         }
         //关联ViewModel
         binding!!.setVariable(viewModelId, viewModel)
@@ -169,15 +169,15 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
         //showFailure
         viewModel?.uC?.showFailureEvent?.observe(viewLifecycleOwner,
-            Observer<String> {msg-> showFailure(msg) })
+            Observer<String> { msg -> showFailure(msg) })
     }
 
 
     override fun showProgress(msg: String?) {
-        if (dialog==null){
+        if (dialog == null) {
             initDialog()
         }
-        if (dialog?.isShowing==true){
+        if (dialog?.isShowing == true) {
             dialog?.dismiss()
         }
         dialog?.show()
@@ -186,7 +186,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     }
 
     override fun hideProgress() {
-        if (dialog!=null&&dialog!!.isShowing){
+        if (dialog != null && dialog!!.isShowing) {
             dialog!!.dismiss()
         }
     }
@@ -205,9 +205,8 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
         if (mLoadService == null) {
             Log.d("BaseFragment", "setLoadSir: ")
             mLoadService = LoadSir.getDefault()
-                .register(view,
-                    Callback.OnReloadListener { v: View? -> onRetryBtnClick() }
-                )
+                .register(view
+                ) { onRetryBtnClick() }
         }
     }
 
@@ -250,8 +249,8 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
     }
 
-    open fun showToast(msg:String){
-        Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
+    open fun showToast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -266,10 +265,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     ): T {
         return ViewModelProvider(this)[cls]
     }
-
-
-
-
 
 
     /**
@@ -296,21 +291,21 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
     protected abstract fun onRetryBtnClick()
 
     override fun onDestroy() {
-        if (dialog?.isShowing==true){
+        if (dialog?.isShowing == true) {
             dialog?.dismiss()
         }
         dialog = null
         viewModel?.removeRxBus()
         mLoadService = null
         binding = null
-        viewModel=null
-        tvMsg=null
+        viewModel = null
+        tvMsg = null
         super.onDestroy()
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onMessageEvent(event: MessageEvent){
+    open fun onMessageEvent(event: MessageEvent) {
         viewModel?.receiveEvent(event)
     }
 

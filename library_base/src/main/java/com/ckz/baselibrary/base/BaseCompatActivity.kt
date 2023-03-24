@@ -61,13 +61,13 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
         initViewDataBinding(savedInstanceState)
         initDialog()
         //私有的ViewModel与View的契约事件回调逻辑
-        registorUIChangeLiveDataCallBack();
+        registorUIChangeLiveDataCallBack()
         //页面数据初始化方法
-        initInitializationData();
+        initInitializationData()
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
-        initViewObservable();
+        initViewObservable()
         //注册RxBus
-        viewModel?.registerRxBus();
+        viewModel?.registerRxBus()
 
     }
 
@@ -238,7 +238,7 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
         }
     }
 
-    val context:Context = this
+    val context:Context get() = this
 
     override fun initParam() {
 
