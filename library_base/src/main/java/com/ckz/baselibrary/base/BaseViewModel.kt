@@ -5,21 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.ckz.baselibrary.bus.SingleLiveEvent
-import com.ckz.baselibrary.loadsir.EmptyCallback
-import com.ckz.baselibrary.loadsir.ErrorCallback
-import com.ckz.baselibrary.loadsir.LoadingCallback
 import com.ckz.baselibrary.message.MessageEvent
 import com.ckz.baselibrary.utils.LogUtils
-import kotlinx.coroutines.cancel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -31,9 +24,9 @@ import java.lang.ref.WeakReference
  * @date 2020/5/11
  */
 open class BaseViewModel @JvmOverloads constructor(
-    val application: Application
+    application: Application
 
-) : AndroidViewModel(application), IBaseViewModel,LifecycleOwner {
+) : AndroidViewModel(application), IBaseViewModel, LifecycleOwner {
     private var uc: UIChangeLiveData? = null
     private val TAG = this.javaClass.simpleName
 
@@ -42,32 +35,37 @@ open class BaseViewModel @JvmOverloads constructor(
      */
     private var mInjectModels: MutableList<BaseModel?> = ArrayList()
 
-    val context: Context get()  = application.applicationContext
+    val context: Context get() = getApplication<Application>().applicationContext
 
-    private var activity:WeakReference<AppCompatActivity>?=null
+    private var activityWeak: WeakReference<AppCompatActivity>? = null
 
-    private var fragment :WeakReference<Fragment>?=null
+    private var fragmentWeak: WeakReference<Fragment>? = null
 
-    fun initActivity(activity: AppCompatActivity){
-        this.activity = WeakReference(activity)
+    val activity:AppCompatActivity? get() = activityWeak?.get()
+
+    val fragment:Fragment? get() = fragmentWeak?.get()
+
+    fun initActivity(activity: AppCompatActivity) {
+        this.activityWeak = WeakReference(activity)
     }
 
-    fun initFragment(fragment: Fragment){
-        this.fragment = WeakReference(fragment)
+    fun initFragment(fragment: Fragment) {
+        this.fragmentWeak = WeakReference(fragment)
     }
 
-    val pageContext get() = when {
-        activity!=null -> {
+    val pageContext
+        get() = when {
+            activity != null -> {
 
-            activity!!.get() as Context
+                activity!! as Context
+            }
+            fragment != null -> {
+                fragment!!.context
+            }
+            else -> {
+                throw (Exception("activity or fragment is null"))
+            }
         }
-        fragment!=null -> {
-            fragment!!.get()!!.context
-        }
-        else -> {
-            throw (Exception("activity or fragment is null"))
-        }
-    }
 
     init {
         initModel()
@@ -91,7 +89,7 @@ open class BaseViewModel @JvmOverloads constructor(
                     e.printStackTrace();
                 } catch (e: ClassCastException) {
                     e.printStackTrace()
-                    throw  RuntimeException("SubClass must extends Class:BaseModel");
+                    throw RuntimeException("SubClass must extends Class:BaseModel");
                 }
             }
         }
@@ -135,13 +133,13 @@ open class BaseViewModel @JvmOverloads constructor(
         uc?.showFailureEvent?.postValue(message)
     }
 
-    open fun startActivity(intent:Intent,options:Bundle?){
+    open fun startActivity(intent: Intent, options: Bundle?) {
         when {
-            activity!=null -> {
-                activity?.get()?.startActivity(intent,options)
+            activity != null -> {
+                activity?.startActivity(intent, options)
             }
-            fragment!=null -> {
-                fragment?.get()?.startActivity(intent,options)
+            fragment != null -> {
+                fragment?.startActivity(intent, options)
             }
             else -> {
                 throw (Exception("activity or fragment is null"))
@@ -149,30 +147,32 @@ open class BaseViewModel @JvmOverloads constructor(
         }
     }
 
-    open fun startActivity(intent: Intent){
-        startActivity(intent,null)
+    open fun startActivity(intent: Intent) {
+        startActivity(intent, null)
     }
 
-    open  fun createLauncher(callback:(resultCode:Int,result:ActivityResult)->Unit):ActivityResultLauncher<Intent>{
-        return when{
-            activity!=null->{
-                activity!!.get()!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                    callback.invoke(it.resultCode,it)
-                }
+    open fun createLauncher(callback: (resultCode: Int, result: ActivityResult) -> Unit): ActivityResultLauncher<Intent> {
+        return when {
+            activity != null -> {
+                activity!!
+                    .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                        callback.invoke(it.resultCode, it)
+                    }
             }
-            fragment!=null->{
-                fragment!!.get()!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                    callback.invoke(it.resultCode,it)
-                }
+            fragment != null -> {
+                fragment!!
+                    .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                        callback.invoke(it.resultCode, it)
+                    }
             }
-            else->{
+            else -> {
                 throw (Exception("activity or fragment is null"))
             }
         }
 
     }
 
-    fun receiveEvent(event: MessageEvent){
+    fun receiveEvent(event: MessageEvent) {
 
     }
 
@@ -213,20 +213,20 @@ open class BaseViewModel @JvmOverloads constructor(
     }
 
     override fun registerRxBus() {
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
     }
 
     override fun removeRxBus() {
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
         }
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onMessageEvent(event:MessageEvent){
+    open fun onMessageEvent(event: MessageEvent) {
 
     }
 
@@ -238,21 +238,21 @@ open class BaseViewModel @JvmOverloads constructor(
         }
         mInjectModels.clear()
         uc = null
-        activity = null
-        fragment = null
+        activityWeak = null
+        fragmentWeak = null
 
     }
 
     override fun getLifecycle(): Lifecycle {
         return when {
-            activity!=null -> {
-                activity!!.get()!!.lifecycle
+            activity != null -> {
+                activity!!.lifecycle
             }
-            fragment!=null -> {
-                fragment!!.get()!!.lifecycle
+            fragment != null -> {
+                fragment!!.lifecycle
             }
             else -> {
-               throw Exception("activity and fragment is empty")
+                throw Exception("activity and fragment is empty")
             }
         }
     }
@@ -282,11 +282,11 @@ class UIChangeLiveData : SingleLiveEvent<Any?>() {
         get() = createLiveData(field).also { field = it }
         private set
 
-    var showEmptyEvent:SingleLiveEvent<Void>?=null
+    var showEmptyEvent: SingleLiveEvent<Void>? = null
         get() = createLiveData(field).also { field = it }
         private set
 
-    var showFailureEvent:SingleLiveEvent<String>?=null
+    var showFailureEvent: SingleLiveEvent<String>? = null
         get() = createLiveData(field).also { field = it }
         private set
 

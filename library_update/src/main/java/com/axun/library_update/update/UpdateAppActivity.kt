@@ -57,7 +57,6 @@ class UpdateAppActivity:BaseCompatActivity<ActivityUpdateAppBinding,UpdateAppVie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel?.activity = this
         viewModel?.requestCreate()
         setWindow()
         getActivitySize()
