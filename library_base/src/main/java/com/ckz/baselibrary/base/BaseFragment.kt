@@ -64,6 +64,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel?.initFragment(this)
         //私有的ViewModel与View的契约事件回调逻辑
         registorUIChangeLiveDataCallBack()
         //页面数据初始化方法
