@@ -23,6 +23,7 @@ import kotlinx.coroutines.cancel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.ref.WeakReference
 
 /**
  * @author kzcai
@@ -30,7 +31,7 @@ import org.greenrobot.eventbus.ThreadMode
  * @date 2020/5/11
  */
 open class BaseViewModel @JvmOverloads constructor(
-    application: Application
+    val application: Application
 
 ) : AndroidViewModel(application), IBaseViewModel,LifecycleOwner {
     private var uc: UIChangeLiveData? = null
@@ -41,19 +42,27 @@ open class BaseViewModel @JvmOverloads constructor(
      */
     private var mInjectModels: MutableList<BaseModel?> = ArrayList()
 
-    var context = application.applicationContext
+    val context: Context get()  = application.applicationContext
 
-    var activity:AppCompatActivity?=null
+    private var activity:WeakReference<AppCompatActivity>?=null
 
-    var fragment : Fragment?=null
+    private var fragment :WeakReference<Fragment>?=null
+
+    fun initActivity(activity: AppCompatActivity){
+        this.activity = WeakReference(activity)
+    }
+
+    fun initFragment(fragment: Fragment){
+        this.fragment = WeakReference(fragment)
+    }
 
     val pageContext get() = when {
         activity!=null -> {
 
-            activity as Context
+            activity!!.get() as Context
         }
         fragment!=null -> {
-            fragment!!.context
+            fragment!!.get()!!.context
         }
         else -> {
             throw (Exception("activity or fragment is null"))
@@ -98,41 +107,41 @@ open class BaseViewModel @JvmOverloads constructor(
         }
 
     open fun showDialog(title: String = "") {
-        uc!!.showDialogEvent!!.postValue(title)
+        uc?.showDialogEvent?.postValue(title)
     }
 
     open fun dismissDialog() {
-        uc!!.dismissDialogEvent!!.call()
+        uc?.dismissDialogEvent?.call()
     }
 
 
     open fun showToast(msg: String = "") {
-        uc!!.showToastEvent!!.postValue(msg)
+        uc?.showToastEvent?.postValue(msg)
     }
 
     open fun showContent() {
-        uc!!.showContentEvent!!.call()
+        uc?.showContentEvent?.call()
     }
 
     open fun showLoading() {
-        uc!!.showLoadingEvent!!.call()
+        uc?.showLoadingEvent?.call()
     }
 
     open fun showEmpty() {
-        uc!!.showEmptyEvent!!.call()
+        uc?.showEmptyEvent?.call()
     }
 
     open fun showFailure(message: String?) {
-        uc!!.showFailureEvent!!.postValue(message)
+        uc?.showFailureEvent?.postValue(message)
     }
 
     open fun startActivity(intent:Intent,options:Bundle?){
         when {
             activity!=null -> {
-                activity!!.startActivity(intent,options)
+                activity?.get()?.startActivity(intent,options)
             }
             fragment!=null -> {
-                fragment!!.startActivity(intent,options)
+                fragment?.get()?.startActivity(intent,options)
             }
             else -> {
                 throw (Exception("activity or fragment is null"))
@@ -147,12 +156,12 @@ open class BaseViewModel @JvmOverloads constructor(
     open  fun createLauncher(callback:(resultCode:Int,result:ActivityResult)->Unit):ActivityResultLauncher<Intent>{
         return when{
             activity!=null->{
-                activity!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                activity!!.get()!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                     callback.invoke(it.resultCode,it)
                 }
             }
             fragment!=null->{
-                fragment!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                fragment!!.get()!!.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                     callback.invoke(it.resultCode,it)
                 }
             }
@@ -237,13 +246,13 @@ open class BaseViewModel @JvmOverloads constructor(
     override fun getLifecycle(): Lifecycle {
         return when {
             activity!=null -> {
-                activity!!.lifecycle
+                activity!!.get()!!.lifecycle
             }
             fragment!=null -> {
-                fragment!!.lifecycle
+                fragment!!.get()!!.lifecycle
             }
             else -> {
-                activity!!.lifecycle
+               throw Exception("activity and fragment is empty")
             }
         }
     }
