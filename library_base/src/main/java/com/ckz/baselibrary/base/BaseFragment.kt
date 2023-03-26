@@ -295,6 +295,7 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
         if (dialog?.isShowing == true) {
             dialog?.dismiss()
         }
+        dialogView = null
         dialog = null
         viewModel?.removeRxBus()
         mLoadService = null
