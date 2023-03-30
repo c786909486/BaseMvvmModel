@@ -3,6 +3,7 @@ package com.axun.basemvvmmodel
 import android.app.Application
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
 import com.axun.library_update.update.UpdateUtils
@@ -91,13 +92,13 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     }
 
 
-    override fun onCreate() {
-        super.onCreate()
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
         NetWorkUtils.addListener(listener)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         NetWorkUtils.removeListener(listener)
     }
 
