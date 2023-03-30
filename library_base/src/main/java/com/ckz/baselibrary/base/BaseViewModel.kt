@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference
 open class BaseViewModel @JvmOverloads constructor(
     application: Application
 
-) : AndroidViewModel(application), IBaseViewModel, LifecycleOwner {
+) : AndroidViewModel(application), IBaseViewModel {
     private var uc: UIChangeLiveData? = null
     private val TAG = this.javaClass.simpleName
 
@@ -177,40 +177,6 @@ open class BaseViewModel @JvmOverloads constructor(
     }
 
 
-    override fun onAny(
-        owner: LifecycleOwner?,
-        event: Lifecycle.Event?
-    ) {
-    }
-
-    override fun onCreate() {
-        LogUtils.d(TAG, "onCreate")
-    }
-
-    override fun onDestroy() {
-        LogUtils.d(TAG, "onDestroy")
-
-    }
-
-    override fun onStart() {
-        LogUtils.d(TAG, "onStart")
-
-    }
-
-    override fun onStop() {
-        LogUtils.d(TAG, "onStop")
-
-    }
-
-    override fun onResume() {
-        LogUtils.d(TAG, "onResume")
-
-    }
-
-    override fun onPause() {
-        LogUtils.d(TAG, "onPause")
-
-    }
 
     override fun registerRxBus() {
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -242,21 +208,6 @@ open class BaseViewModel @JvmOverloads constructor(
         fragmentWeak = null
 
     }
-
-    override fun getLifecycle(): Lifecycle {
-        return when {
-            activity != null -> {
-                activity!!.lifecycle
-            }
-            fragment != null -> {
-                fragment!!.lifecycle
-            }
-            else -> {
-                throw Exception("activity and fragment is empty")
-            }
-        }
-    }
-
 
 }
 
