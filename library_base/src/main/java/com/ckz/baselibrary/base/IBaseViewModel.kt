@@ -9,6 +9,21 @@ import androidx.lifecycle.*
  */
 interface IBaseViewModel: DefaultLifecycleObserver {
 
+
+    fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?)
+
+    fun onCreate()
+
+    fun onDestroy()
+
+    fun onStart()
+
+    fun onStop()
+
+    fun onResume()
+
+    fun onPause()
+
     /**
      * 注册RxBus
      */

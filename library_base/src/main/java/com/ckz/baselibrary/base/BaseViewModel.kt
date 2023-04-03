@@ -28,7 +28,6 @@ open class BaseViewModel @JvmOverloads constructor(
 
 ) : AndroidViewModel(application), IBaseViewModel {
     private var uc: UIChangeLiveData? = null
-    private val TAG = this.javaClass.simpleName
 
     /**
      * 保存使用注解的 model ，用于解绑
@@ -44,6 +43,8 @@ open class BaseViewModel @JvmOverloads constructor(
     val activity:AppCompatActivity? get() = activityWeak?.get()
 
     val fragment:Fragment? get() = fragmentWeak?.get()
+
+    var owner:LifecycleOwner?=null
 
     fun initActivity(activity: AppCompatActivity) {
         this.activityWeak = WeakReference(activity)
@@ -176,6 +177,70 @@ open class BaseViewModel @JvmOverloads constructor(
 
     }
 
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        this.owner = owner
+        onCreate()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        onDestroy()
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
+        onPause()
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        super.onResume(owner)
+        onResume()
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        onStart()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        onStop()
+    }
+
+    override fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {
+
+    }
+
+    override fun onCreate() {
+
+    }
+
+    override fun onDestroy() {
+        if (!unregisterOnStop){
+            removeRxBus()
+        }
+    }
+
+    override fun onStart() {
+
+    }
+
+    override fun onStop() {
+        if (unregisterOnStop){
+            removeRxBus()
+        }
+    }
+
+    override fun onResume() {
+        registerRxBus()
+    }
+
+    override fun onPause() {
+
+    }
+
+    open val unregisterOnStop get() = false
 
 
     override fun registerRxBus() {
@@ -198,7 +263,6 @@ open class BaseViewModel @JvmOverloads constructor(
 
 
     override fun onCleared() {
-        super.onCleared()
         for (model in mInjectModels) {
             model?.onCleared()
         }
@@ -206,7 +270,8 @@ open class BaseViewModel @JvmOverloads constructor(
         uc = null
         activityWeak = null
         fragmentWeak = null
-
+        owner = null
+        super.onCleared()
     }
 
 }

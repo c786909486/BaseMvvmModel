@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseViewModel
+import com.ckz.baselibrary.message.MessageEvent
 import com.ckz.baselibrary.utils.NetWorkUtils
 import com.yyt.librarynetwork.HttpManager
 import com.yyt.librarynetwork.utils.toAccessorJson
@@ -15,6 +16,7 @@ import com.yyt.librarynetwork.utils.toNetError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 
 /**
  *@packageName com.axun.basemvvmmodel
@@ -22,6 +24,23 @@ import kotlinx.coroutines.withContext
  *@date 2022/6/10
  */
 class MainViewModel(application: Application) : BaseViewModel(application) {
+
+    fun sendToast(view:View){
+        val message = MessageEvent(1)
+        message.obj = "1231"
+        sendMessage(message)
+    }
+
+    override fun onMessageEvent(event: MessageEvent) {
+        super.onMessageEvent(event)
+        if (event.code==1){
+            showToast(event.obj.toString())
+        }
+    }
+
+    fun sendMessage(event: MessageEvent) {
+        EventBus.getDefault().post(event)
+    }
 
     fun netClick(view: View) {
         viewModelScope.launch {
@@ -116,6 +135,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         }
 
     }
+
+
 }
 
 fun Map<String, Any>.toJsonMap(): Map<String, String> {

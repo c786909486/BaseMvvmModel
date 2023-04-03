@@ -23,8 +23,6 @@ import com.ckz.baselibrary.utils.LogUtils
 import com.kingja.loadsir.callback.Callback.OnReloadListener
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -67,7 +65,7 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable()
         //注册RxBus
-        viewModel?.registerRxBus()
+//        viewModel?.registerRxBus()
 
     }
 
@@ -331,7 +329,6 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
        if (dialog?.isShowing==true){
            dialog?.dismiss()
        }
-        viewModel?.removeRxBus()
         binding = null
         dialog = null
         viewModel = null
@@ -340,12 +337,6 @@ abstract class BaseCompatActivity<V:ViewDataBinding,VM : BaseViewModel?>: AppCom
         tvMsg = null
         super.onDestroy()
 
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onMessageEvent(event: MessageEvent){
-        viewModel?.receiveEvent(event)
     }
 
 }

@@ -24,8 +24,6 @@ import com.ckz.baselibrary.message.MessageEvent
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -71,8 +69,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
         initInitializationData()
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable()
-        //注册RxBus
-        viewModel?.registerRxBus()
     }
 
     private fun initDialog() {
@@ -297,7 +293,6 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
         }
         dialogView = null
         dialog = null
-        viewModel?.removeRxBus()
         mLoadService = null
         binding = null
         viewModel = null
@@ -306,9 +301,5 @@ abstract class BaseFragment<V : ViewDataBinding, VM : BaseViewModel?> : Fragment
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onMessageEvent(event: MessageEvent) {
-        viewModel?.receiveEvent(event)
-    }
 
 }
