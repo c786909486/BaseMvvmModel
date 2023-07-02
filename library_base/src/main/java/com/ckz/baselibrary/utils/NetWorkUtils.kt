@@ -1,4 +1,4 @@
-package com.ckz.baselibrary.utils
+package com.axun.yhytakemealscreen.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,6 +15,7 @@ import android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION
 import android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION
 import android.os.Build
 import android.telephony.TelephonyManager
+import com.ckz.baselibrary.utils.LogUtils
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -30,6 +31,7 @@ object NetWorkUtils {
     val NETWORKTYPE_WIFI = 0
     val NETWORKTYPE_2G = 1
     val NETWORKTYPE_4G = 2
+    val NETWORKTYPE_ETHERNET = 3
 
 
 
@@ -130,6 +132,8 @@ object NetWorkUtils {
                     mNetWorkType =  NETWORKTYPE_WIFI
                 } else if (type.equals("MOBILE", ignoreCase = true)) {
                     return if (isFastMobileNetwork(context)) NETWORKTYPE_4G else NETWORKTYPE_2G
+                }else if (type.equals("ETHERNET", ignoreCase = true)) {
+                    return NETWORKTYPE_ETHERNET
                 }
             } else {
                 mNetWorkType = NETWORKTYPE_NONE //没有网络
@@ -143,6 +147,8 @@ object NetWorkUtils {
                         mNetWorkType = NETWORKTYPE_WIFI
                     }else if(nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){//移动数据
                         mNetWorkType =  if (isFastMobileNetwork(context)) NETWORKTYPE_4G else NETWORKTYPE_2G
+                    }else if(nc.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){//移动数据
+                        mNetWorkType =  NETWORKTYPE_ETHERNET
                     }
                 }
 
@@ -159,24 +165,26 @@ object NetWorkUtils {
     private fun isFastMobileNetwork(context: Context): Boolean {
         val telephonyManager =
             context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return telephonyManager.dataNetworkType == TelephonyManager.NETWORK_TYPE_LTE
+        return try {
+            telephonyManager.dataNetworkType == TelephonyManager.NETWORK_TYPE_LTE
+        }catch (e:Exception){
+            false
+        }
     }
 
 
     private val listeners = mutableListOf<OnNetWorDelayListener>()
 
-    fun addListener(listener: OnNetWorDelayListener){
+    fun addListener(listener:OnNetWorDelayListener){
         listeners.add(listener)
     }
 
-    fun removeListener(listener: OnNetWorDelayListener){
+    fun removeListener(listener:OnNetWorDelayListener){
         listeners.remove(listener)
     }
 
     fun stop(){
-        if (p?.isAlive==true){
-            p?.destroy()
-        }
+        p?.destroy()
         p = null
     }
 
@@ -207,10 +215,7 @@ object NetWorkUtils {
 
     class NetChangeReceiver:BroadcastReceiver(){
 
-
         var onChanged:(()->Unit)?=null
-
-
 
         override fun onReceive(p0: Context?, p1: Intent?) {
             when(p1?.action){
