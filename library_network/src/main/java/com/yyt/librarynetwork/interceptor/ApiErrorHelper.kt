@@ -47,10 +47,9 @@ object ApiErrorHelper {
     fun netErrorString( e: Throwable?):String {
         when (e) {
             is HttpException -> {
-                val code = (e as HttpException).response()?.code()
+                val code = e.response()?.code()
                 try {
                     if (code!=null){
-//                        Toast.makeText(context, NetErrorString.getErrorStr(code), Toast.LENGTH_SHORT).show()
                         return  NetErrorString.getErrorStr(code)
                     }
                 }catch (e:IOException){
@@ -66,7 +65,7 @@ object ApiErrorHelper {
             }
 
             is JSONException ->{
-                return  "JSON解析错误"
+                return  "JSON解析错误:${e.message}"
             }
             else -> {
                 return e.toString()

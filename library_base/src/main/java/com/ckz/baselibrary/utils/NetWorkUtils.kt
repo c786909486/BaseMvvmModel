@@ -1,4 +1,4 @@
-package com.axun.yhytakemealscreen.utils
+package com.yyt.buffetposapp.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,6 +15,7 @@ import android.net.wifi.WifiManager.NETWORK_STATE_CHANGED_ACTION
 import android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION
 import android.os.Build
 import android.telephony.TelephonyManager
+import android.util.Log
 import com.ckz.baselibrary.utils.LogUtils
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -93,10 +94,17 @@ object NetWorkUtils {
                     for (listener in listeners){
                         listener.onGetNetDelay(delay)
                     }
+                }else{
+                    for (listener in listeners){
+                        listener.onError(Exception(str))
+                    }
+                    Log.d("NetWorkUtils", "getNetDelay: ${str}")
                 }
             }
         }catch (e:Exception){
             e.printStackTrace()
+            Log.d("NetWorkUtils", "getNetDelay: ${str}")
+
             for (listener in listeners){
                 listener.onError(e)
             }
@@ -175,11 +183,11 @@ object NetWorkUtils {
 
     private val listeners = mutableListOf<OnNetWorDelayListener>()
 
-    fun addListener(listener:OnNetWorDelayListener){
+    fun addListener(listener: OnNetWorDelayListener){
         listeners.add(listener)
     }
 
-    fun removeListener(listener:OnNetWorDelayListener){
+    fun removeListener(listener: OnNetWorDelayListener){
         listeners.remove(listener)
     }
 
