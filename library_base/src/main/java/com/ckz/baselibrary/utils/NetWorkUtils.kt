@@ -1,4 +1,4 @@
-package com.yyt.buffetposapp.utils
+package com.ckz.baselibrary.utils
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -16,7 +16,6 @@ import android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.ckz.baselibrary.utils.LogUtils
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

@@ -9,7 +9,7 @@ import com.alibaba.fastjson.JSON
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseViewModel
 import com.ckz.baselibrary.message.MessageEvent
-import com.yyt.buffetposapp.utils.NetWorkUtils
+import com.ckz.baselibrary.utils.NetWorkUtils
 import com.yyt.librarynetwork.HttpManager
 import com.yyt.librarynetwork.utils.toAccessorJson
 import com.yyt.librarynetwork.utils.toNetError
@@ -121,7 +121,7 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         NetWorkUtils.removeListener(listener)
     }
 
-    val listener = object :NetWorkUtils.OnNetWorDelayListener{
+    val listener = object : NetWorkUtils.OnNetWorDelayListener{
         override fun onGetLostInfo(lost: String) {
 
         }
