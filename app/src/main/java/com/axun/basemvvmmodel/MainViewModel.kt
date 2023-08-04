@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus
 class MainViewModel(application: Application) : BaseViewModel(application) {
 
     fun sendToast(view:View){
-        val message = MessageEvent(1)
+        val message = MessageEvent(111111)
         message.obj = "1231"
         sendMessage(message)
     }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import com.axun.basemvvmmodel.databinding.FragmentTestBinding
 import com.ckz.baselibrary.base.BaseFragment
+import com.ckz.baselibrary.message.MessageEvent
+import org.greenrobot.eventbus.EventBus
 
 /**
  *@packageName com.axun.basemvvmmodel
@@ -27,5 +29,6 @@ class TestFragment:BaseFragment<FragmentTestBinding,TestFragmentVIewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel?.requestCreate()
+
     }
 }

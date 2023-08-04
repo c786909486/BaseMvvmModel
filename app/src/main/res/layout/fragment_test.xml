@@ -2,7 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="com.axun.basemvvmmodel.TestFragmentVIewModel"/>
+        <variable
+            name="testViewModel"
+            type="TestFragmentVIewModel" />
     </data>
 
     <LinearLayout
@@ -12,6 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="12312sdasdasdasd12e2e"/>
+            android:text="12312sdasdasdasd12e2e"
+            android:onClick="@{testViewModel::sendToast}"/>
     </LinearLayout>
 </layout>

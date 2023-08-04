@@ -316,8 +316,4 @@ class UIChangeLiveData : SingleLiveEvent<Any?>() {
         }
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<in Any?>) {
-        super.observe(owner, observer)
-    }
-
 }
