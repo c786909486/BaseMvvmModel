@@ -25,7 +25,7 @@ import java.io.InputStreamReader
  *@author kzcai
  *@date 2022/11/25
  */
-object NetWorkUtils {
+object NetWorkUtil {
 
     val NETWORKTYPE_NONE = -1
     val NETWORKTYPE_WIFI = 0
@@ -85,8 +85,8 @@ object NetWorkUtils {
         var str = String()
         try {
             while (buf.readLine()?.also { str = it } != null) {
-                LogUtils
-                    .d("NetWorkUtils","receive===>${str}")
+//                Log
+//                    .e("NetWorkUtils","receive===>${str}")
                 if (str.indexOf("time=")!=-1){
                     val item = str.split("time=")
                     var delay =  item[1].replace("ms","").trim()
@@ -97,12 +97,12 @@ object NetWorkUtils {
                     for (listener in listeners){
                         listener.onError(Exception(str))
                     }
-                    Log.d("NetWorkUtils", "getNetDelay: ${str}")
+                    Log.e("NetWorkUtils", "getNetDelayError111: ${str}")
                 }
             }
         }catch (e:Exception){
             e.printStackTrace()
-            Log.d("NetWorkUtils", "getNetDelay: ${str}")
+            Log.e("NetWorkUtils", "getNetDelayError22: ${str}")
 
             for (listener in listeners){
                 listener.onError(e)
