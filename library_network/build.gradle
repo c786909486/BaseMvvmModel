@@ -19,8 +19,8 @@ afterEvaluate {
 }
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    namespace 'com.ckz.library_network'
+    compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion

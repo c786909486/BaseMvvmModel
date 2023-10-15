@@ -16,7 +16,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.ckz.library_base_compose.utils.ComposeToastUtils
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
 /**
  *@packageName com.example.mycomposedemo.viewmodel
@@ -29,7 +32,38 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     private var pageData = MutableLiveData(PageState.CONTENT.bindData())
 
+    /**
+     * 保存使用注解的 model ，用于解绑
+     */
+    private var mInjectModels: MutableList<BaseModel?> = ArrayList()
 
+    init {
+        initModel()
+    }
+
+    private fun initModel() {
+        val fields = this.javaClass.declaredFields
+        for (field in fields) {
+            val injectModel = field.getAnnotation(InjectModel::class.java)
+            if (injectModel != null) {
+                try {
+                    val type: Class<out BaseModel?> =
+                        field.type as Class<out BaseModel?>
+                    val mInjectModel = type.newInstance()
+                    field.isAccessible = true
+                    field.set(this, mInjectModel)
+                    mInjectModels.add(mInjectModel)
+                } catch (e: IllegalAccessException) {
+                    e.printStackTrace();
+                } catch (e: InstantiationException) {
+                    e.printStackTrace();
+                } catch (e: ClassCastException) {
+                    e.printStackTrace()
+                    throw RuntimeException("SubClass must extends Class:BaseModel");
+                }
+            }
+        }
+    }
 
     @Composable
     fun ContentWidget(
@@ -43,7 +77,6 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         val showDialog = isDialog.observeAsState()
 
         val pageStateData = pageData.observeAsState()
-
         DefaultStateLayout(
             modifier = modifier,
             pageStateData = pageStateData.value!!,
@@ -99,5 +132,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     fun retryClick(){
         showLoading()
+    }
+
+    fun showToast(msg:String){
+        ComposeToastUtils.toastData.postValue(msg)
     }
 }

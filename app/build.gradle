@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':library_base')
-    implementation project(path: ':library_base_compose')
+
     implementation project(path: ':library_network')
     implementation project(path: ':library_update')
     implementation 'me.jessyan:autosize:1.1.2'

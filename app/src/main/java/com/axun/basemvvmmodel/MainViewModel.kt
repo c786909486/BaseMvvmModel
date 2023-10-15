@@ -1,6 +1,7 @@
 package com.axun.basemvvmmodel
 
 import android.app.Application
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -9,7 +10,7 @@ import com.alibaba.fastjson.JSON
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseViewModel
 import com.ckz.baselibrary.message.MessageEvent
-import com.ckz.baselibrary.utils.NetWorkUtils
+import com.ckz.baselibrary.utils.NetWorkUtil
 import com.yyt.librarynetwork.HttpManager
 import com.yyt.librarynetwork.utils.toAccessorJson
 import com.yyt.librarynetwork.utils.toNetError
@@ -29,6 +30,10 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         val message = MessageEvent(111111)
         message.obj = "1231"
         sendMessage(message)
+    }
+
+    fun toCompose(view: View){
+        startActivity(Intent(context,MyComposeActivity::class.java))
     }
 
     override fun onMessageEvent(event: MessageEvent) {
@@ -90,19 +95,19 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch {
             withContext(Dispatchers.IO){
 
-                NetWorkUtils.getNetDelay("www.axun.com.cn")
+                NetWorkUtil.getNetDelay("www.axun.com.cn")
             }
         }
 
     }
 
     fun stopDelay(view:View){
-        NetWorkUtils.stop()
+        NetWorkUtil.stop()
     }
 
 
     fun wifiInfo(view:View){
-        val info =  NetWorkUtils
+        val info =  NetWorkUtil
             .getWifiInfo(context)
         if (info!=null){
             val rri = info.bssid
@@ -113,15 +118,15 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        NetWorkUtils.addListener(listener)
+        NetWorkUtil.addListener(listener)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
-        NetWorkUtils.removeListener(listener)
+        NetWorkUtil.removeListener(listener)
     }
 
-    val listener = object : NetWorkUtils.OnNetWorDelayListener{
+    val listener = object : NetWorkUtil.OnNetWorDelayListener{
         override fun onGetLostInfo(lost: String) {
 
         }
