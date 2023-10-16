@@ -3,7 +3,7 @@ package com.axun.library_update.update
 import java.io.Serializable
 
 /**
- *@packageName com.axun.library_update.update
+ *@packageName com.ckz.library_update.update
  *@author kzcai
  *@date 2022/9/15
  */

@@ -4,12 +4,12 @@ import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.*
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.ckz.baselibrary.R
 import com.ckz.baselibrary.decoration.DividerSpace
 import com.ckz.baselibrary.decoration.GridSpacingItemDecoration
 import com.ckz.baselibrary.decoration.HorizontalSpaceDecoration
 import com.ckz.baselibrary.utils.DisplayUtils
 import com.ckz.baselibrary.utils.DividerLineUtils
+import com.ckz.library_base.R
 
 /**
  *@packageName com.ckz.baselibrary.binding.recyclerview

@@ -14,12 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
-import com.ckz.baselibrary.R
 import com.ckz.baselibrary.loadsir.EmptyCallback
 import com.ckz.baselibrary.loadsir.ErrorCallback
 import com.ckz.baselibrary.loadsir.LoadingCallback
 import com.ckz.baselibrary.message.MessageEvent
 import com.ckz.baselibrary.utils.LogUtils
+import com.ckz.library_base.R
 import com.kingja.loadsir.callback.Callback.OnReloadListener
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir

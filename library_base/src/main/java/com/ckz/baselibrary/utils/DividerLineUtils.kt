@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.ckz.baselibrary.R
+import com.ckz.library_base.R
 
 /**
  *@packageName com.axun.tqhmanager.ui

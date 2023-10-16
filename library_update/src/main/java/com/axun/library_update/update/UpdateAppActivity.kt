@@ -1,22 +1,20 @@
 package com.axun.library_update.update
 
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.WindowManager
 import android.widget.RelativeLayout
-import com.axun.library_update.BR
-import com.axun.library_update.R
-import com.axun.library_update.databinding.ActivityUpdateAppBinding
+import com.ckz.library_update.BR
+import com.ckz.library_update.R
+import com.ckz.library_update.databinding.ActivityUpdateAppBinding
 import com.ckz.baselibrary.base.BaseCompatActivity
 import com.ckz.baselibrary.utils.ScreenUtils
 
 /**
- *@packageName com.axun.library_update.update
+ *@packageName com.ckz.library_update.update
  *@author kzcai
  *@date 2022/9/15
  */
-class UpdateAppActivity:BaseCompatActivity<ActivityUpdateAppBinding,UpdateAppViewModel>() {
+class UpdateAppActivity:BaseCompatActivity<ActivityUpdateAppBinding, UpdateAppViewModel>() {
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_update_app
     }

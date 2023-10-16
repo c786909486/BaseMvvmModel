@@ -7,7 +7,7 @@
         <import type="com.axun.library_update.update.UpdateAppViewModel"/>
         <variable
             name="updateViewModel"
-            type="UpdateAppViewModel" />
+            type="com.axun.library_update.update.UpdateAppViewModel" />
     </data>
 
     <LinearLayout

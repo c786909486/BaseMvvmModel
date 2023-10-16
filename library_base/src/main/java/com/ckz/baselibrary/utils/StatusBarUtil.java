@@ -19,7 +19,7 @@ import androidx.annotation.IntRange;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.ckz.baselibrary.R;
+import com.ckz.library_base.R;
 
 
 /**

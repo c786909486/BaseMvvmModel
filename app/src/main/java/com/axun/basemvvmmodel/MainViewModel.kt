@@ -1,7 +1,6 @@
 package com.axun.basemvvmmodel
 
 import android.app.Application
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -33,7 +32,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun toCompose(view: View){
-        startActivity(Intent(context,MyComposeActivity::class.java))
     }
 
     override fun onMessageEvent(event: MessageEvent) {

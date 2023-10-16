@@ -1,7 +1,7 @@
-package com.ckz.baselibrary.utils
+package com.ckz.library_base_compose.utils
 
 import android.util.Log
-import com.ckz.library_base.BuildConfig
+import com.ckz.library_base_compose.BuildConfig
 
 object LogUtils {
     private val isDebug = BuildConfig.DEBUG

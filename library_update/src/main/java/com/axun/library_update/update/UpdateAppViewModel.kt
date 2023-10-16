@@ -2,7 +2,6 @@ package com.axun.library_update.update
 
 import android.app.Activity
 import android.app.Application
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,13 +12,13 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 /**
- *@packageName com.axun.library_update.update
+ *@packageName com.ckz.library_update.update
  *@author kzcai
  *@date 2022/9/15
  */
 class UpdateAppViewModel(application: Application):BaseViewModel(application) {
 
-    lateinit var appData:IUpdateModel
+    lateinit var appData: IUpdateModel
     var nerVersion = MutableLiveData("")
     var changeLog = MutableLiveData("")
     var inDownload = MutableLiveData(false)

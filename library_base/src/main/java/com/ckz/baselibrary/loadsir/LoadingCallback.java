@@ -3,7 +3,7 @@ package com.ckz.baselibrary.loadsir;
 import android.content.Context;
 import android.view.View;
 
-import com.ckz.baselibrary.R;
+import com.ckz.library_base.R;
 import com.kingja.loadsir.callback.Callback;
 
 /**

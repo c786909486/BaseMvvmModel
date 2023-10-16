@@ -5,7 +5,6 @@ import com.axun.basemvvmmodel.databinding.ActivityMainBinding
 import com.axun.library_update.update.UpdateUtils
 import com.ckz.baselibrary.base.BaseCompatActivity
 import com.yyt.librarynetwork.HttpManager
-import java.util.jar.Manifest
 
 class MainActivity : BaseCompatActivity<ActivityMainBinding,MainViewModel>() {
 

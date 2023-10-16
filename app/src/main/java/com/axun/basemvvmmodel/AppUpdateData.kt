@@ -7,7 +7,7 @@ import com.axun.library_update.update.IUpdateModel
  *@author kzcai
  *@date 2022/9/15
  */
-class AppUpdateData(val version:String,val url:String):IUpdateModel() {
+class AppUpdateData(val version:String,val url:String): IUpdateModel() {
     override val iNetVersion: String
         get() = version
 

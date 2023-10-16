@@ -1,4 +1,4 @@
-package com.axun.library_update
+package com.ckz.library_update
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.axun.library_update.test", appContext.packageName)
+        assertEquals("com.ckz.library_update.test", appContext.packageName)
     }
 }

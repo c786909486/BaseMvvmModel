@@ -7,7 +7,7 @@ import com.ckz.baselibrary.utils.VersionCompare
 import java.lang.Exception
 
 /**
- *@packageName com.axun.library_update.update
+ *@packageName com.ckz.library_update.update
  *@author kzcai
  *@date 2022/9/15
  */
@@ -38,7 +38,7 @@ class UpdateUtils {
     }
 
 
-    fun<T:IUpdateModel> checkUpdate(netData:T?,showToast:Boolean = false){
+    fun<T: IUpdateModel> checkUpdate(netData:T?, showToast:Boolean = false){
         this.showToast = showToast
         if (netData==null){
             toast("未检测到更新版本")
@@ -48,7 +48,7 @@ class UpdateUtils {
         val version = netData.iNetVersion
         val localVersion = getAppVersion(context!!)
         if(VersionCompare.compareVersion(version,localVersion)==1){
-            val intent = Intent(context,UpdateAppActivity::class.java)
+            val intent = Intent(context, UpdateAppActivity::class.java)
             intent.putExtra("data",netData)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.startActivity(intent)
