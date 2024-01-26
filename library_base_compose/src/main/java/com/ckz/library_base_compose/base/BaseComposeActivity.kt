@@ -30,8 +30,10 @@ abstract class BaseComposeActivity:ComponentActivity(),LifecycleOwner {
         ComposeToastUtils.toastData.removeObservers(this)
     }
 
-    private val toastObserver = Observer<String> {
-        Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+    private val toastObserver = Observer<String?> {
+        if (!it.isNullOrEmpty()){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        }
     }
 
     @Composable

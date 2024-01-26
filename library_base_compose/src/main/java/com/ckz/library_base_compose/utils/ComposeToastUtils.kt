@@ -10,6 +10,6 @@ import androidx.lifecycle.MutableLiveData
  */
 object ComposeToastUtils {
 
-    val toastData = MutableLiveData<String>("")
+    val toastData = MutableLiveData<String?>("")
 
 }

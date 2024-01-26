@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -12,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.ckz.library_base_compose.base.BaseComposeActivity
 import com.ckz.library_base_compose.utils.ComposeToastUtils
 import com.ckz.yyt.compose.ui.MyCompseViewModel
@@ -27,12 +31,34 @@ class MainActivity : BaseComposeActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Greeting("Android")
+                val navController = rememberNavController()
+                AppNav.instance.AppHost(
+                    navController = navController,
+                    startDestination = "home",
+
+                ){
+                    composable("home"){
+                        Greeting("Android")
+                    }
+
+                    composable("second"){
+                        SecondPage()
+                    }
+
+
+                }
             }
         }
     }
 
 
+}
+
+@Composable
+fun SecondPage(){
+    Column {
+        Text(text = "第二个页面")
+    }
 }
 
 @Composable
@@ -46,9 +72,15 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 //        }
 //    )
     myViewModel.ContentWidget {
-        Text(text = "123123", modifier = Modifier.clickable {
-            myViewModel.showToast("2312312")
-        })
+        Column {
+            Text(text = "123123", modifier = Modifier.clickable {
+                myViewModel.showToast("2312312")
+            })
+
+            Button(onClick = { AppNav.instance.navController.navigate("second") }) {
+                Text(text = "secondPage")
+            }
+        }
     }
 }
 

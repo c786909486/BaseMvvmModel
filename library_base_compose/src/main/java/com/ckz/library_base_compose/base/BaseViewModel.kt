@@ -1,36 +1,45 @@
 package com.ckz.library_base_compose.base
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import com.ckz.baselibrary.message.MessageEvent
 import com.ckz.library_base_compose.utils.ComposeToastUtils
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  *@packageName com.example.mycomposedemo.viewmodel
  *@author kzcai
  *@date 2023/2/6
  */
-abstract class BaseViewModel(application: Application) : AndroidViewModel(application) {
+abstract class BaseViewModel(application: Application) : AndroidViewModel(application),IBaseViewModel {
 
     private var isDialog = MutableLiveData(false)
 
     private var pageData = MutableLiveData(PageState.CONTENT.bindData())
+    open val unregisterOnStop get() = false
+
+    private var hasCreated = false
 
     /**
      * 保存使用注解的 model ，用于解绑
@@ -75,8 +84,61 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         content: @Composable () -> Unit = { }
     ) {
         val showDialog = isDialog.observeAsState()
-
         val pageStateData = pageData.observeAsState()
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val lifecycle = lifecycleOwner.lifecycle
+
+        val observer = remember {
+            LifecycleEventObserver { owner, event ->
+                Log.d("HomePage", "HomePage: ${event.name}")
+                when(event){
+                    Lifecycle.Event.ON_CREATE->{
+                        if (!hasCreated){
+                            onCreate(owner)
+                            hasCreated = true
+//                            Log.d("HomePage", "HomePage: ${event.name}")
+                        }
+
+                    }
+
+                    Lifecycle.Event.ON_START -> {
+                        onStart(owner)
+//                        Log.d("HomePage", "HomePage: ${event.name}")
+                    }
+                    Lifecycle.Event.ON_RESUME ->{
+                        onResume(owner)
+//                        Log.d("HomePage", "HomePage: ${event.name}")
+                    }
+                    Lifecycle.Event.ON_PAUSE -> {
+//                        onPause(owner)
+                        Log.d("HomePage", "HomePage: ${event.name}")
+                    }
+                    Lifecycle.Event.ON_STOP -> {
+                        onStop(owner)
+//                        Log.d("HomePage", "HomePage: ${event.name}")
+                    }
+                    Lifecycle.Event.ON_DESTROY -> {
+                        onDestroy(owner)
+                        onCleared()
+//                        Log.d("HomePage", "HomePage: ${event.name}")
+                        hasCreated = false
+                    }
+                    Lifecycle.Event.ON_ANY -> {
+                        onAny(owner,event)
+//                        Log.d("HomePage", "HomePage: ${event.name}")
+                    }
+                }
+
+            }
+        }
+
+        DisposableEffect(lifecycleOwner, observer) {
+            lifecycle.addObserver(observer)
+            onDispose {
+                lifecycle.removeObserver(observer)
+            }
+        }
+
         DefaultStateLayout(
             modifier = modifier,
             pageStateData = pageStateData.value!!,
@@ -130,11 +192,67 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         isDialog.value = false
     }
 
-    fun retryClick(){
+    open fun retryClick(){
         showLoading()
     }
 
-    fun showToast(msg:String){
-        ComposeToastUtils.toastData.postValue(msg)
+    open fun showToast(msg:String?){
+        if (!msg.isNullOrEmpty()){
+            ComposeToastUtils.toastData.postValue(msg)
+        }
+
     }
+
+
+    override fun registerRxBus() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
+    override fun removeRxBus() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onMessageEvent(event: MessageEvent) {
+
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        if (!unregisterOnStop){
+            removeRxBus()
+        }
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        if (unregisterOnStop){
+            removeRxBus()
+        }
+    }
+
+    override fun onCreate(owner: LifecycleOwner) {
+
+    }
+
+    override fun onAny(owner: LifecycleOwner?, event: Lifecycle.Event?) {
+
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+
+
+    }
+
 }
