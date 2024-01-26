@@ -90,7 +90,6 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
         val observer = remember {
             LifecycleEventObserver { owner, event ->
-                Log.d("HomePage", "HomePage: ${event.name}")
                 when(event){
                     Lifecycle.Event.ON_CREATE->{
                         if (!hasCreated){
