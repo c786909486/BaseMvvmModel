@@ -19,12 +19,16 @@ abstract class BaseComposeActivity:ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        beforeInitPage(savedInstanceState)
         ComposeToastUtils.toastData.observe(this,toastObserver)
         setContent {
             initPage()
         }
     }
 
+    open fun beforeInitPage(savedInstanceState: Bundle?){
+
+    }
 
 
     override fun onDestroy() {
