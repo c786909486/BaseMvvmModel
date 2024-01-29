@@ -15,7 +15,7 @@ import com.ckz.library_base_compose.utils.ComposeToastUtils
  *@author kzcai
  *@date 2023/10/16
  */
-abstract class BaseComposeActivity:ComponentActivity(),LifecycleOwner {
+abstract class BaseComposeActivity:ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +24,8 @@ abstract class BaseComposeActivity:ComponentActivity(),LifecycleOwner {
             initPage()
         }
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,6 +24,8 @@ import com.ckz.yyt.compose.ui.theme.BaseMvvmModelTheme
 
 class MainActivity : BaseComposeActivity() {
 
+    override val lifecycle: Lifecycle
+        get() = super.lifecycle
     @Composable
     override fun initPage() {
         BaseMvvmModelTheme {
