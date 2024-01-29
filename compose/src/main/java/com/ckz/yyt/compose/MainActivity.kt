@@ -1,8 +1,5 @@
 package com.ckz.yyt.compose
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,8 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ckz.library_base_compose.AppNav
 import com.ckz.library_base_compose.base.BaseComposeActivity
-import com.ckz.library_base_compose.utils.ComposeToastUtils
 import com.ckz.yyt.compose.ui.MyCompseViewModel
 import com.ckz.yyt.compose.ui.theme.BaseMvvmModelTheme
 
