@@ -11,6 +11,18 @@ import androidx.navigation.compose.NavHost
  *@packageName com.ckz.yyt.callnumberscreen
  *@author kzcai
  *@date 2023/11/14
+ * val navController = rememberNavController()
+ *  AppNav.instance.AppHost(
+ *     navController = navController,
+ *      startDestination = "home",
+ *      ){
+ *          composable("home"){
+ *             Greeting("Android")
+ *          }
+ *          composable("second"){
+ *             SecondPage()
+ *          }
+ *     }
  */
 class AppNav {
     companion object {
