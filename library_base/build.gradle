@@ -72,7 +72,7 @@ dependencies {
     api rootProject.ext.androidx["lifecycle-viewmodel"]
     api rootProject.ext.androidx["android.material"]
 
-    api rootProject.ext.dependencies["loadsir"]
+//    api rootProject.ext.dependencies["loadsir"]
     api rootProject.ext.dependencies["gson"]
     api rootProject.ext.dependencies["rxjava2"]
     api rootProject.ext.dependencies["rxpermissions"]
