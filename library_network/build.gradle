@@ -12,7 +12,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.ckz'
                 artifactId = 'library_network'
-                version = '1.0.4'
+                version = '1.6.5'
             }
         }
     }
