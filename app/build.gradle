@@ -46,7 +46,7 @@ dependencies {
 
     implementation project(path: ':library_network')
     implementation project(path: ':library_update')
-    implementation 'me.jessyan:autosize:1.1.2'
+//    implementation 'me.jessyan:autosize:1.1.2'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
