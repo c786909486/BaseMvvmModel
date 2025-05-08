@@ -48,7 +48,7 @@ android {
 
 dependencies {
 
-    implementation platform('androidx.compose:compose-bom:2023.03.00')
+    implementation platform('androidx.compose:compose-bom:2024.04.01')
     implementation project(path: ':library_base_compose')
 
 //    implementation 'androidx.compose.ui:ui'

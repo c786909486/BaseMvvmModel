@@ -3,6 +3,7 @@ package com.axun.library_update.update
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.RelativeLayout
+import androidx.activity.OnBackPressedCallback
 import com.ckz.library_update.BR
 import com.ckz.library_update.R
 import com.ckz.library_update.databinding.ActivityUpdateAppBinding
@@ -58,9 +59,19 @@ class UpdateAppActivity:BaseCompatActivity<ActivityUpdateAppBinding, UpdateAppVi
         viewModel?.requestCreate()
         setWindow()
         getActivitySize()
+//        onBackPressedDispatcher.addCallback(this,object :OnBackPressedCallback(false){
+//            override fun handleOnBackPressed() {
+//
+//            }
+//
+//        })
     }
 
     override fun onBackPressed() {
 //        super.onBackPressed()
     }
+
+
+
+
 }
