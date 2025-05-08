@@ -5,16 +5,16 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.ckz'
+group = 'com.gitee.code1993'
 
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.ckz'
+                groupId = 'com.gitee.code1993'
                 artifactId = 'library_base_compose'
-                version = '1.6.2'
+                version = '1.7.0'
             }
         }
     }
