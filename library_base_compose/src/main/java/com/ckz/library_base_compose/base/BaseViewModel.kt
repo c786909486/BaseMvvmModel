@@ -8,8 +8,11 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +38,8 @@ import org.greenrobot.eventbus.ThreadMode
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application),IBaseViewModel {
 
     private var isDialog = MutableLiveData(false)
+
+    var dialogText by mutableStateOf("")
 
     private var pageData = MutableLiveData(PageState.CONTENT.bindData())
     open val unregisterOnStop get() = false
@@ -158,7 +163,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CircularProgressIndicator()
-                    Text(text = "加载中...")
+                    Text(text = dialogText)
                 }
             }
         }
@@ -183,8 +188,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         pageData.value = PageState.ERROR.bindData(setData)
     }
 
-    fun showProcessDialog(){
+    fun showProcessDialog(msg:String = "加载中..."){
         isDialog.value = true
+        dialogText = msg
     }
 
     fun hideDialog(){
