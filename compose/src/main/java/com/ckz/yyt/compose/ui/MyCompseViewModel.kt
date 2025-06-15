@@ -9,7 +9,7 @@ import com.ckz.library_base_compose.base.BaseViewModel
  *@author kzcai
  *@date 2023/10/15
  */
-class MyCompseViewModel(application: Application):BaseViewModel(application) {
+class MyCompseViewModel():BaseViewModel() {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)

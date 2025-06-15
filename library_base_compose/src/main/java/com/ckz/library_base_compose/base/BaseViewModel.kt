@@ -32,6 +32,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.ckz.baselibrary.message.MessageEvent
 import com.ckz.library_base_compose.utils.ComposeToastUtils
 import org.greenrobot.eventbus.EventBus
@@ -43,10 +44,10 @@ import org.greenrobot.eventbus.ThreadMode
  *@author kzcai
  *@date 2023/2/6
  */
-abstract class BaseViewModel(application: Application) : AndroidViewModel(application),
+abstract class BaseViewModel() : ViewModel(),
     IBaseViewModel {
 
-    private var isDialog = MutableLiveData(false)
+    var isDialog = MutableLiveData(false)
 
     var dialogText by mutableStateOf("")
 
@@ -54,43 +55,43 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     var canDismissByBack by mutableStateOf(true)
 
-    private var pageData = MutableLiveData(PageState.CONTENT.bindData())
+    var pageData = MutableLiveData(PageState.CONTENT.bindData())
     open val unregisterOnStop get() = false
 
-    private var hasCreated = false
+    var hasCreated = false
 
     /**
      * 保存使用注解的 model ，用于解绑
      */
     private var mInjectModels: MutableList<BaseModel?> = ArrayList()
 
-    init {
-        initModel()
-    }
-
-    private fun initModel() {
-        val fields = this.javaClass.declaredFields
-        for (field in fields) {
-            val injectModel = field.getAnnotation(InjectModel::class.java)
-            if (injectModel != null) {
-                try {
-                    val type: Class<out BaseModel?> =
-                        field.type as Class<out BaseModel?>
-                    val mInjectModel = type.newInstance()
-                    field.isAccessible = true
-                    field.set(this, mInjectModel)
-                    mInjectModels.add(mInjectModel)
-                } catch (e: IllegalAccessException) {
-                    e.printStackTrace();
-                } catch (e: InstantiationException) {
-                    e.printStackTrace();
-                } catch (e: ClassCastException) {
-                    e.printStackTrace()
-                    throw RuntimeException("SubClass must extends Class:BaseModel");
-                }
-            }
-        }
-    }
+//    init {
+//        initModel()
+//    }
+//
+//    private fun initModel() {
+//        val fields = this.javaClass.declaredFields
+//        for (field in fields) {
+//            val injectModel = field.getAnnotation(InjectModel::class.java)
+//            if (injectModel != null) {
+//                try {
+//                    val type: Class<out BaseModel?> =
+//                        field.type as Class<out BaseModel?>
+//                    val mInjectModel = type.newInstance()
+//                    field.isAccessible = true
+//                    field.set(this, mInjectModel)
+//                    mInjectModels.add(mInjectModel)
+//                } catch (e: IllegalAccessException) {
+//                    e.printStackTrace();
+//                } catch (e: InstantiationException) {
+//                    e.printStackTrace();
+//                } catch (e: ClassCastException) {
+//                    e.printStackTrace()
+//                    throw RuntimeException("SubClass must extends Class:BaseModel");
+//                }
+//            }
+//        }
+//    }
 
     @Composable
     fun ContentWidget(
@@ -99,8 +100,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         loading: @Composable (StateLayoutData) -> Unit = { DefaultLoadingLayout(it) },
         empty: @Composable (StateLayoutData) -> Unit = { DefaultEmptyLayout(it) },
         error: @Composable (StateLayoutData) -> Unit = { DefaultErrorLayout(it) },
-        content: @Composable () -> Unit = { }
-    ) {
+        content: @Composable () -> Unit = { },
+
+        ) {
         val showDialog = isDialog.observeAsState()
         val pageStateData = pageData.observeAsState()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -264,7 +266,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     }
 
-    override fun onDestroy(owner: LifecycleOwner) {
+
+    override fun onCleared() {
+        super.onCleared()
         if (!unregisterOnStop) {
             removeRxBus()
         }
@@ -294,6 +298,10 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     override fun onResume(owner: LifecycleOwner) {
 
+
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
 
     }
 

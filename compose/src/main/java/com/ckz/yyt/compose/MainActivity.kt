@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ckz.library_base_compose.AppNav
 import com.ckz.library_base_compose.base.BaseComposeActivity
+import com.ckz.library_base_compose.base.ContentWidget
 import com.ckz.yyt.compose.ui.MyCompseViewModel
 import com.ckz.yyt.compose.ui.theme.BaseMvvmModelTheme
 
@@ -71,7 +72,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 //
 //        }
 //    )
-    myViewModel.ContentWidget {
+    ContentWidget<MyCompseViewModel>( vm = myViewModel) {
         Column {
             Text(text = "123123", modifier = Modifier.clickable {
                 myViewModel.showToast("2312312")
