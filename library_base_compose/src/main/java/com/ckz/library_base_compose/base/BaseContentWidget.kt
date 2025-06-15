@@ -97,6 +97,7 @@ fun <VM: BaseViewModel>ContentWidget(
         lifecycle.addObserver(observer)
         onDispose {
             lifecycle.removeObserver(observer)
+            vm.onDestroy(lifecycleOwner)
         }
     }
 

@@ -93,114 +93,114 @@ abstract class BaseViewModel() : ViewModel(),
 //        }
 //    }
 
-    @Composable
-    fun ContentWidget(
-        modifier: Modifier = Modifier,
-        onRetry: OnRetry = { retryClick() },
-        loading: @Composable (StateLayoutData) -> Unit = { DefaultLoadingLayout(it) },
-        empty: @Composable (StateLayoutData) -> Unit = { DefaultEmptyLayout(it) },
-        error: @Composable (StateLayoutData) -> Unit = { DefaultErrorLayout(it) },
-        content: @Composable () -> Unit = { },
-
-        ) {
-        val showDialog = isDialog.observeAsState()
-        val pageStateData = pageData.observeAsState()
-        val lifecycleOwner = LocalLifecycleOwner.current
-        val lifecycle = lifecycleOwner.lifecycle
-
-        val observer = remember {
-            LifecycleEventObserver { owner, event ->
-                when (event) {
-                    Lifecycle.Event.ON_CREATE -> {
-                        if (!hasCreated) {
-                            onCreate(owner)
-                            hasCreated = true
-//                            Log.d("HomePage", "HomePage: ${event.name}")
-                        }
-
-                    }
-
-                    Lifecycle.Event.ON_START -> {
-                        onStart(owner)
+//    @Composable
+//    fun ContentWidget(
+//        modifier: Modifier = Modifier,
+//        onRetry: OnRetry = { retryClick() },
+//        loading: @Composable (StateLayoutData) -> Unit = { DefaultLoadingLayout(it) },
+//        empty: @Composable (StateLayoutData) -> Unit = { DefaultEmptyLayout(it) },
+//        error: @Composable (StateLayoutData) -> Unit = { DefaultErrorLayout(it) },
+//        content: @Composable () -> Unit = { },
+//
+//        ) {
+//        val showDialog = isDialog.observeAsState()
+//        val pageStateData = pageData.observeAsState()
+//        val lifecycleOwner = LocalLifecycleOwner.current
+//        val lifecycle = lifecycleOwner.lifecycle
+//
+//        val observer = remember {
+//            LifecycleEventObserver { owner, event ->
+//                when (event) {
+//                    Lifecycle.Event.ON_CREATE -> {
+//                        if (!hasCreated) {
+//                            onCreate(owner)
+//                            hasCreated = true
+////                            Log.d("HomePage", "HomePage: ${event.name}")
+//                        }
+//
+//                    }
+//
+//                    Lifecycle.Event.ON_START -> {
+//                        onStart(owner)
+////                        Log.d("HomePage", "HomePage: ${event.name}")
+//                    }
+//
+//                    Lifecycle.Event.ON_RESUME -> {
+//                        onResume(owner)
+////                        Log.d("HomePage", "HomePage: ${event.name}")
+//                    }
+//
+//                    Lifecycle.Event.ON_PAUSE -> {
+////                        onPause(owner)
 //                        Log.d("HomePage", "HomePage: ${event.name}")
-                    }
-
-                    Lifecycle.Event.ON_RESUME -> {
-                        onResume(owner)
-//                        Log.d("HomePage", "HomePage: ${event.name}")
-                    }
-
-                    Lifecycle.Event.ON_PAUSE -> {
-//                        onPause(owner)
-                        Log.d("HomePage", "HomePage: ${event.name}")
-                    }
-
-                    Lifecycle.Event.ON_STOP -> {
-                        onStop(owner)
-//                        Log.d("HomePage", "HomePage: ${event.name}")
-                    }
-
-                    Lifecycle.Event.ON_DESTROY -> {
-                        onDestroy(owner)
-                        onCleared()
-//                        Log.d("HomePage", "HomePage: ${event.name}")
-                        hasCreated = false
-                    }
-
-                    Lifecycle.Event.ON_ANY -> {
-                        onAny(owner, event)
-//                        Log.d("HomePage", "HomePage: ${event.name}")
-                    }
-                }
-
-            }
-        }
-
-        DisposableEffect(lifecycleOwner, observer) {
-            lifecycle.addObserver(observer)
-            onDispose {
-                lifecycle.removeObserver(observer)
-            }
-        }
-
-        DefaultStateLayout(
-            modifier = modifier,
-            pageStateData = pageStateData.value!!,
-            onRetry = onRetry,
-            loading = loading,
-            empty = empty,
-            error = error,
-            content = content
-        )
-
-        if (true == showDialog.value) {
-            Dialog(
-                onDismissRequest = {
-                    isDialog.value = !isDialog.value!!
-                },
-                properties = DialogProperties(
-                    dismissOnClickOutside = canDismissByTouch,
-                    usePlatformDefaultWidth = false,
-                    decorFitsSystemWindows = false,
-                    dismissOnBackPress = canDismissByBack//
-                )
-            ) {
-                Column(
-                    modifier = Modifier
-
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .padding(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(color = Color.White)
-                    Box(modifier = Modifier.height(10.dp))
-                    Text(text = dialogText, color = Color.White)
-                }
-
-            }
-        }
-    }
+//                    }
+//
+//                    Lifecycle.Event.ON_STOP -> {
+//                        onStop(owner)
+////                        Log.d("HomePage", "HomePage: ${event.name}")
+//                    }
+//
+//                    Lifecycle.Event.ON_DESTROY -> {
+//                        onDestroy(owner)
+//                        onCleared()
+////                        Log.d("HomePage", "HomePage: ${event.name}")
+//                        hasCreated = false
+//                    }
+//
+//                    Lifecycle.Event.ON_ANY -> {
+//                        onAny(owner, event)
+////                        Log.d("HomePage", "HomePage: ${event.name}")
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        DisposableEffect(lifecycleOwner, observer) {
+//            lifecycle.addObserver(observer)
+//            onDispose {
+//                lifecycle.removeObserver(observer)
+//            }
+//        }
+//
+//        DefaultStateLayout(
+//            modifier = modifier,
+//            pageStateData = pageStateData.value!!,
+//            onRetry = onRetry,
+//            loading = loading,
+//            empty = empty,
+//            error = error,
+//            content = content
+//        )
+//
+//        if (true == showDialog.value) {
+//            Dialog(
+//                onDismissRequest = {
+//                    isDialog.value = !isDialog.value!!
+//                },
+//                properties = DialogProperties(
+//                    dismissOnClickOutside = canDismissByTouch,
+//                    usePlatformDefaultWidth = false,
+//                    decorFitsSystemWindows = false,
+//                    dismissOnBackPress = canDismissByBack//
+//                )
+//            ) {
+//                Column(
+//                    modifier = Modifier
+//
+//                        .clip(RoundedCornerShape(6.dp))
+//                        .background(Color.Black.copy(alpha = 0.5f))
+//                        .padding(12.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    CircularProgressIndicator(color = Color.White)
+//                    Box(modifier = Modifier.height(10.dp))
+//                    Text(text = dialogText, color = Color.White)
+//                }
+//
+//            }
+//        }
+//    }
 
     fun showContent() {
         pageData.value = PageState.CONTENT.bindData()
