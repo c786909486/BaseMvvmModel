@@ -91,6 +91,9 @@ fun DefaultEmptyLayout(stateLayoutData: StateLayoutData) {
                 Column(
                     modifier = Modifier
                         .wrapContentSize()
+                        .clickable{
+                            stateLayoutData.retry.invoke(it)
+                        }
                         .align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -118,6 +121,9 @@ fun DefaultErrorLayout(stateLayoutData: StateLayoutData) {
                 Column(
                     modifier = Modifier
                         .wrapContentSize()
+                        .clickable{
+                            stateLayoutData.retry.invoke(it)
+                        }
                         .align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

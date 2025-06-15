@@ -3,8 +3,13 @@ package com.ckz.library_base_compose.base
 import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -15,10 +20,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -35,11 +43,16 @@ import org.greenrobot.eventbus.ThreadMode
  *@author kzcai
  *@date 2023/2/6
  */
-abstract class BaseViewModel(application: Application) : AndroidViewModel(application),IBaseViewModel {
+abstract class BaseViewModel(application: Application) : AndroidViewModel(application),
+    IBaseViewModel {
 
     private var isDialog = MutableLiveData(false)
 
     var dialogText by mutableStateOf("")
+
+    var canDismissByTouch by mutableStateOf(false)
+
+    var canDismissByBack by mutableStateOf(true)
 
     private var pageData = MutableLiveData(PageState.CONTENT.bindData())
     open val unregisterOnStop get() = false
@@ -95,9 +108,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
         val observer = remember {
             LifecycleEventObserver { owner, event ->
-                when(event){
-                    Lifecycle.Event.ON_CREATE->{
-                        if (!hasCreated){
+                when (event) {
+                    Lifecycle.Event.ON_CREATE -> {
+                        if (!hasCreated) {
                             onCreate(owner)
                             hasCreated = true
 //                            Log.d("HomePage", "HomePage: ${event.name}")
@@ -109,26 +122,31 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
                         onStart(owner)
 //                        Log.d("HomePage", "HomePage: ${event.name}")
                     }
-                    Lifecycle.Event.ON_RESUME ->{
+
+                    Lifecycle.Event.ON_RESUME -> {
                         onResume(owner)
 //                        Log.d("HomePage", "HomePage: ${event.name}")
                     }
+
                     Lifecycle.Event.ON_PAUSE -> {
 //                        onPause(owner)
                         Log.d("HomePage", "HomePage: ${event.name}")
                     }
+
                     Lifecycle.Event.ON_STOP -> {
                         onStop(owner)
 //                        Log.d("HomePage", "HomePage: ${event.name}")
                     }
+
                     Lifecycle.Event.ON_DESTROY -> {
                         onDestroy(owner)
                         onCleared()
 //                        Log.d("HomePage", "HomePage: ${event.name}")
                         hasCreated = false
                     }
+
                     Lifecycle.Event.ON_ANY -> {
-                        onAny(owner,event)
+                        onAny(owner, event)
 //                        Log.d("HomePage", "HomePage: ${event.name}")
                     }
                 }
@@ -153,56 +171,75 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
             content = content
         )
 
-        if (true==showDialog.value){
-            Dialog(onDismissRequest = {
-                isDialog.value = !isDialog.value!!
-            }, properties = DialogProperties(dismissOnClickOutside = false)) {
+        if (true == showDialog.value) {
+            Dialog(
+                onDismissRequest = {
+                    isDialog.value = !isDialog.value!!
+                },
+                properties = DialogProperties(
+                    dismissOnClickOutside = canDismissByTouch,
+                    usePlatformDefaultWidth = false,
+                    decorFitsSystemWindows = false,
+                    dismissOnBackPress = canDismissByBack//
+                )
+            ) {
                 Column(
                     modifier = Modifier
-                        .background(Color.Transparent),
+
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .padding(12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CircularProgressIndicator()
-                    Text(text = dialogText)
+                    CircularProgressIndicator(color = Color.White)
+                    Box(modifier = Modifier.height(10.dp))
+                    Text(text = dialogText, color = Color.White)
                 }
+
             }
         }
     }
 
-    fun showContent(){
+    fun showContent() {
         pageData.value = PageState.CONTENT.bindData()
     }
 
-    fun showLoading(msg:String = ""){
+    fun showLoading(msg: String = "") {
         val setData = StateData(tipTex = msg)
         pageData.value = PageState.LOADING.bindData(setData)
     }
 
-    fun showEmpty(emptyMsg:String = "暂无数据"){
+    fun showEmpty(emptyMsg: String = "暂无数据") {
         val setData = StateData(tipTex = emptyMsg, btnText = "点击重试")
         pageData.value = PageState.EMPTY.bindData(setData)
     }
 
-    fun showError(errorMsg:String){
+    fun showError(errorMsg: String) {
         val setData = StateData(tipTex = errorMsg, btnText = "点击重试")
         pageData.value = PageState.ERROR.bindData(setData)
     }
 
-    fun showProcessDialog(msg:String = "加载中..."){
+    fun showProcessDialog(
+        msg: String = "加载中...",
+        canTouchDismiss: Boolean = false,
+        canTouchByBack: Boolean = true
+    ) {
         isDialog.value = true
         dialogText = msg
+        canDismissByTouch = canTouchDismiss
+        canDismissByBack = canTouchByBack
     }
 
-    fun hideDialog(){
+    fun hideDialog() {
         isDialog.value = false
     }
 
-    open fun retryClick(){
-        showLoading()
+    open fun retryClick() {
+//        showLoading()
     }
 
-    open fun showToast(msg:String?){
-        if (!msg.isNullOrEmpty()){
+    open fun showToast(msg: String?) {
+        if (!msg.isNullOrEmpty()) {
             ComposeToastUtils.toastData.postValue(msg)
         }
 
@@ -228,7 +265,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        if (!unregisterOnStop){
+        if (!unregisterOnStop) {
             removeRxBus()
         }
     }
@@ -238,7 +275,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        if (unregisterOnStop){
+        if (unregisterOnStop) {
             removeRxBus()
         }
     }

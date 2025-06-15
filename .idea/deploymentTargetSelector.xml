@@ -4,13 +4,21 @@
     <selectionStates>
       <SelectionState runConfigName="compose">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-06-13T12:02:42.900738Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kzcai/.android/avd/xiaodux8_API_33.ini" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-08T02:43:44.171634Z">
+        <DropdownSelection timestamp="2025-06-12T09:10:56.648024Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kzcai/.android/avd/Pixel_6a_API_VanillaIceCream.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/kzcai/.android/avd/Pixel_3a.avd" />
             </handle>
           </Target>
         </DropdownSelection>

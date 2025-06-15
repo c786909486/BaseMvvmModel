@@ -80,6 +80,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             Button(onClick = { AppNav.instance.navController.navigate("second") }) {
                 Text(text = "secondPage")
             }
+
+            Button(onClick = {
+                myViewModel.showProcessDialog(msg = "登录。。。")
+            }) {
+                Text(text = "加载弹窗")
+            }
         }
     }
 }
