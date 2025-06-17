@@ -40,8 +40,8 @@ fun <VM: BaseViewModel>ContentWidget(
     content: @Composable () -> Unit = { },
 
     ) {
-    val showDialog = vm.isDialog.observeAsState()
-    val pageStateData = vm.pageData.observeAsState()
+    val showDialog = vm.isDialog
+    val pageStateData = vm.pageData
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
 
@@ -103,7 +103,7 @@ fun <VM: BaseViewModel>ContentWidget(
 
     DefaultStateLayout(
         modifier = modifier,
-        pageStateData = pageStateData.value!!,
+        pageStateData = pageStateData,
         onRetry = onRetry,
         loading = loading,
         empty = empty,
@@ -111,10 +111,10 @@ fun <VM: BaseViewModel>ContentWidget(
         content = content
     )
 
-    if (true == showDialog.value) {
+    if (true == showDialog) {
         Dialog(
             onDismissRequest = {
-                vm.isDialog.value = !vm.isDialog.value!!
+                vm.isDialog = !vm.isDialog
             },
             properties = DialogProperties(
                 dismissOnClickOutside = vm.canDismissByTouch,

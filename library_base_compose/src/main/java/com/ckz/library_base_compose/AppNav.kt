@@ -50,32 +50,16 @@ class AppNav {
         navController: NavHostController,
         startDestination: String,
         modifier: Modifier = Modifier,
-        contentAlignment: Alignment = Alignment.TopStart,
+        contentAlignment: Alignment = Alignment.Center,
         route: String? = null,
-        enterTransition:
-        (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
-            {
-                fadeIn(animationSpec = tween(700))
-            },
-        exitTransition:
-        (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
-            {
-                fadeOut(animationSpec = tween(700))
-            },
-        popEnterTransition:
-        (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+        enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
+            { fadeIn(animationSpec = tween(700)) },
+        exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+            { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) =
             enterTransition,
-        popExitTransition:
-        (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
+        popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) =
             exitTransition,
-        sizeTransform:
-        (@JvmSuppressWildcards
-        AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? =
-            null,
         builder: NavGraphBuilder.() -> Unit
     ) {
         _appNavController = navController
@@ -89,7 +73,6 @@ class AppNav {
             exitTransition,
             popEnterTransition,
             popExitTransition,
-            sizeTransform,
             builder
         )
     }
